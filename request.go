@@ -25,10 +25,12 @@ func (c *Client) Do() ([]byte, error) {
 	}
 
 	// add Header to request
-	if c.ContentType == "" {
-		c.ContentType = ApplicationJSON
+	if c.Method == "POST" {
+		if c.ContentType == "" {
+			c.ContentType = ApplicationJSON
+		}
+		_request.Header.Set("Content-Type", string(c.ContentType))
 	}
-	_request.Header.Set("Content-Type", string(c.ContentType))
 	for k, v := range c.Header {
 		_request.Header.Add(k, v)
 	}
@@ -50,28 +52,4 @@ func (c *Client) Do() ([]byte, error) {
 	}
 
 	return data, nil
-}
-
-func (c *Client) GET() {
-
-}
-
-func (c *Client) POST() {
-
-}
-
-func (c *Client) DELETE() {
-
-}
-
-func (c *Client) PUT() {
-
-}
-
-func (c *Client) PATCH() {
-
-}
-
-func (c *Client) HEAD() {
-
 }
