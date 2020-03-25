@@ -35,8 +35,10 @@ func (c *Client) Do() ([]byte, error) {
 		_request.Header.Add(k, v)
 	}
 
-	// set basic Auto of request
-	_request.SetBasicAuth(c.Auth.Username, c.Auth.Password)
+	// set basic Auth of request
+	if c.BasicAuth.Username != "" && c.BasicAuth.Password != "" {
+		_request.SetBasicAuth(c.BasicAuth.Username, c.BasicAuth.Password)
+	}
 
 	// send request and close on func call end
 	resp, respError := client.Do(_request)

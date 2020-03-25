@@ -29,12 +29,12 @@ type Client struct {
 	Header      map[string]string
 	Params      map[string]string
 	Body        []byte
-	Auth        Auth
+	BasicAuth   BasicAuth
 	Timeout     time.Duration // second
 	ContentType ContentType
 }
 
-type Auth struct {
+type BasicAuth struct {
 	Username string
 	Password string
 }
