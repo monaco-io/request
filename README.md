@@ -1,10 +1,10 @@
 # Request
 
-HTTP client for golang
+HTTP client for golang, Just [axios](https://github.com/axios/axios)
 
 ## Features
 
-- Make [http](https://golang.org/) requests from Golang
+- Make [http](https://golang.org) requests from Golang
 - Intercept request and response
 - Transform request and response data
 
@@ -26,7 +26,7 @@ package main
 import (
     "log"
 
-    "github.com/Monaco-io/request"
+    "github.com/monaco-io/request"
 )
 
 func main() {
@@ -49,7 +49,7 @@ package main
 import (
     "log"
 
-    "github.com/Monaco-io/request"
+    "github.com/monaco-io/request"
 )
 
 func main() {
@@ -59,6 +59,34 @@ func main() {
         Params: map[string]string{"hello": "world"},
         Body:   []byte(`{"hello": "world"}`),
     }
+    resp, err := client.Do()
+
+    log.Println(string(resp), err)
+}
+```
+
+
+### Authorization
+
+```go
+package main
+
+import (
+    "log"
+
+    "github.com/monaco-io/request"
+)
+
+func main() {
+    client := request.Client{
+        URL:    "https://baidu.com",
+        Method: "POST",
+        Auth: request.Auth{
+            Username:"user_xxx",
+            Password:"pwd_xxx",
+        },
+    }
+
     resp, err := client.Do()
 
     log.Println(string(resp), err)

@@ -6,4 +6,10 @@ type Client struct {
 	Header map[string]string
 	Params map[string]string
 	Body   []byte
+	Auth  Auth
+}
+
+type Auth struct {
+	Username string
+	Password string
 }

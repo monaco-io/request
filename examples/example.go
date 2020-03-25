@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/Monaco-io/request"
+	"github.com/monaco-io/request"
 )
 
 func main() {

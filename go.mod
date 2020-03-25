@@ -1,3 +1,3 @@
-module github.com/Monaco-io/request
+module github.com/monaco-io/request
 
 go 1.14
