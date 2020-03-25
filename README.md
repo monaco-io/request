@@ -113,10 +113,10 @@ func main() {
     client := request.Client{
         URL:       "https://baidu.com",
         Method:    "POST",
-        Auth:      request.Auth{
+        BasicAuth:      request.BasicAuth{
             Username:"user_xxx",
             Password:"pwd_xxx",
-        },
+        }, // xxx:xxx
     }
 
     resp, err := client.Do()
