@@ -13,7 +13,7 @@ HTTP client for golang, Just [axios](https://github.com/axios/axios)
 go mod:
 
 ```bash
-go get github.com/Monaco-io/request
+go get github.com/monaco-io/request
 ```
 
 ## Example
