@@ -15,6 +15,16 @@ go mod:
 ```bash
 go get github.com/monaco-io/request
 ```
+## Methods
+
+- OPTIONS                
+- GET    
+- HEAD   
+- POST   
+- PUT    
+- DELETE 
+- TRACE  
+- CONNECT
 
 ## Example
 
