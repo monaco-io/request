@@ -4,10 +4,13 @@ import (
 	"bytes"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 func (c *Client) Do() ([]byte, error) {
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: c.Timeout * time.Second,
+	}
 
 	// encode like https://google.com?hello=world&package=request
 	var encodeError error
@@ -22,6 +25,10 @@ func (c *Client) Do() ([]byte, error) {
 	}
 
 	// add Header to request
+	if c.ContentType == "" {
+		c.ContentType = ApplicationJSON
+	}
+	_request.Header.Set("Content-Type", string(c.ContentType))
 	for k, v := range c.Header {
 		_request.Header.Add(k, v)
 	}

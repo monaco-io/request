@@ -1,6 +1,6 @@
 # Request
 
-HTTP client for golang, Just [axios](https://github.com/axios/axios)
+HTTP client for golang, Inspired by [axios](https://github.com/axios/axios) [request](https://github.com/psf/requests)
 
 ## Features
 
@@ -65,6 +65,28 @@ func main() {
 }
 ```
 
+### Content-Type
+
+```go
+package main
+
+import (
+    "log"
+
+    "github.com/monaco-io/request"
+)
+
+func main() {
+    client := request.Client{
+        URL:          "https://baidu.com",
+        Method:       "POST",
+        ContentType: request.ApplicationXWwwFormURLEncoded, // default is "application/json"
+    }
+    resp, err := client.Do()
+
+    log.Println(string(resp), err)
+}
+```
 
 ### Authorization
 
@@ -79,9 +101,9 @@ import (
 
 func main() {
     client := request.Client{
-        URL:    "https://baidu.com",
-        Method: "POST",
-        Auth: request.Auth{
+        URL:       "https://baidu.com",
+        Method:    "POST",
+        Auth:      request.Auth{
             Username:"user_xxx",
             Password:"pwd_xxx",
         },
