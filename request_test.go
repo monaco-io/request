@@ -1,7 +1,6 @@
 package request
 
 import (
-	"net/http"
 	"reflect"
 	"testing"
 )
@@ -11,7 +10,6 @@ var serverURL = "http://localhost:3000"
 
 func TestClient_Do(t *testing.T) {
 	type fields struct {
-		Client *http.Client
 		URL    string
 		Method string
 		Params map[string]string
@@ -89,7 +87,6 @@ func TestClient_Do(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			c := &Client{
-				Client: tt.fields.Client,
 				URL:    tt.fields.URL,
 				Method: tt.fields.Method,
 				Params: tt.fields.Params,

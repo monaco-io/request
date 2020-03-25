@@ -9,7 +9,7 @@ import (
 func (c *Client) Do() ([]byte, error) {
 	client := &http.Client{}
 
-	// encode to https://google.com?hello=world&package=request
+	// encode like https://google.com?hello=world&package=request
 	var encodeError error
 	if c.URL, encodeError = EncodeURL(c.URL, c.Params); encodeError != nil {
 		return []byte{}, encodeError
