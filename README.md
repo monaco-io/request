@@ -1,6 +1,7 @@
 # Request
 
 HTTP client for golang, Inspired by [axios](https://github.com/axios/axios) [request](https://github.com/psf/requests)
+No 3rd dependency
 
 ## Features
 
@@ -15,15 +16,16 @@ go mod:
 ```bash
 go get github.com/monaco-io/request
 ```
+
 ## Methods
 
-- OPTIONS                
-- GET    
-- HEAD   
-- POST   
-- PUT    
-- DELETE 
-- TRACE  
+- OPTIONS
+- GET
+- HEAD
+- POST
+- PUT
+- DELETE
+- TRACE
 - CONNECT
 
 ## Example

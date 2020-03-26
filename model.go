@@ -3,13 +3,20 @@ package request
 import "time"
 
 const (
-	ApplicationJSON               ContentType = "application/json"
+	// ApplicationJSON application/json
+	ApplicationJSON ContentType = "application/json"
+
+	// ApplicationXWwwFormURLEncoded application/x-www-form-urlencoded
 	ApplicationXWwwFormURLEncoded ContentType = "application/x-www-form-urlencoded"
-	MultipartFormData             ContentType = "multipart/form-data"
+
+	// MultipartFormData multipart/form-data
+	MultipartFormData ContentType = "multipart/form-data"
 )
 
+// ContentType Content-Type
 type ContentType string
 
+// Client Method
 /*
      Method         = "OPTIONS"                ; Section 9.2
                     | "GET"                    ; Section 9.3
@@ -34,6 +41,7 @@ type Client struct {
 	ContentType ContentType
 }
 
+// BasicAuth Add Username:Password as Basic Auth
 type BasicAuth struct {
 	Username string
 	Password string

@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// Do send http request
 func (c *Client) Do() ([]byte, error) {
 	client := &http.Client{
 		Timeout: c.Timeout * time.Second,
