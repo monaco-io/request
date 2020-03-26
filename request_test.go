@@ -149,3 +149,36 @@ func TestClient_Do_Post(t *testing.T) {
 	}
 	t.Log(string(resp))
 }
+
+func TestClient_Do_Encode_Error(t *testing.T) {
+	c := Client{
+		URL:    " " + serverURL + "/POST",
+		Method: "POST",
+	}
+	_, err := c.Do()
+	if err == nil {
+		t.Error(err)
+	}
+}
+
+func TestClient_Do_Build_Request_Error(t *testing.T) {
+	c := Client{
+		URL:    " " + serverURL + "/POST",
+		Method: "method",
+	}
+	_, err := c.Do()
+	if err == nil {
+		t.Error(err)
+	}
+}
+
+func TestClient_Do_Resp_Error(t *testing.T) {
+	c := Client{
+		URL:    "",
+		Method: "POST",
+	}
+	_, err := c.Do()
+	if err == nil {
+		t.Error(err)
+	}
+}
