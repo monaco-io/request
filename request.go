@@ -49,10 +49,5 @@ func (c *Client) Do() ([]byte, error) {
 	defer func() { _ = resp.Body.Close() }()
 
 	// read response data form resp
-	data, readBodyErr := ioutil.ReadAll(resp.Body)
-	if readBodyErr != nil {
-		return []byte{}, readBodyErr
-	}
-
-	return data, nil
+	return ioutil.ReadAll(resp.Body)
 }
