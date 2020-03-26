@@ -1,44 +1,10 @@
-// Package request ...
+// Package request HTTP client for golang
+//  - Make http requests from Golang
+//  - Intercept request and response
+//  - Transform request and response data
 //
-// HTTP client for golang, Inspired by [axios](https://github.com/axios/axios) [request](https://github.com/psf/requests)
-// No 3rd dependency
+// GET
 //
-// ## Features
-//
-// - Make [http](https://golang.org) requests from Golang
-// - Intercept request and response
-// - Transform request and response data
-//
-// ## Installing
-//
-// go mod:
-//
-// go get github.com/monaco-io/request
-//
-// ## Methods
-//
-// - OPTIONS
-// - GET
-// - HEAD
-// - POST
-// - PUT
-// - DELETE
-// - TRACE
-// - CONNECT
-//
-// ## Example
-//
-// ### GET
-//
-// package main
-//
-// import (
-//     "log"
-//
-//     "github.com/monaco-io/request"
-// )
-//
-// func main() {
 //     client := request.Client{
 //         URL:    "https://baidu.com",
 //         Method: "GET",
@@ -46,20 +12,8 @@
 //     }
 //     resp, err := client.Do()
 //
-//     log.Println(string(resp), err)
-// }
+// POST
 //
-// ### POST
-//
-// package main
-//
-// import (
-//     "log"
-//
-//     "github.com/monaco-io/request"
-// )
-//
-// func main() {
 //     client := request.Client{
 //         URL:    "https://baidu.com",
 //         Method: "POST",
@@ -68,20 +22,8 @@
 //     }
 //     resp, err := client.Do()
 //
-//     log.Println(string(resp), err)
-// }
+// Content-Type
 //
-// ### Content-Type
-//
-// package main
-//
-// import (
-//     "log"
-//
-//     "github.com/monaco-io/request"
-// )
-//
-// func main() {
 //     client := request.Client{
 //         URL:          "https://baidu.com",
 //         Method:       "POST",
@@ -89,20 +31,8 @@
 //     }
 //     resp, err := client.Do()
 //
-//     log.Println(string(resp), err)
-// }
+// Authorization
 //
-// ### Authorization
-//
-// package main
-//
-// import (
-//     "log"
-//
-//     "github.com/monaco-io/request"
-// )
-//
-// func main() {
 //     client := request.Client{
 //         URL:       "https://baidu.com",
 //         Method:    "POST",
@@ -113,7 +43,4 @@
 //     }
 //
 //     resp, err := client.Do()
-//
-//     log.Println(string(resp), err)
-// }
 package request
