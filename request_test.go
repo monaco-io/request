@@ -163,8 +163,8 @@ func TestClient_Do_Encode_Error(t *testing.T) {
 
 func TestClient_Do_Build_Request_Error(t *testing.T) {
 	c := Client{
-		URL:    " " + serverURL + "/POST",
-		Method: "method",
+		URL:    serverURL + "/POST",
+		Method: " ",
 	}
 	_, err := c.Do()
 	if err == nil {
@@ -174,7 +174,7 @@ func TestClient_Do_Build_Request_Error(t *testing.T) {
 
 func TestClient_Do_Resp_Error(t *testing.T) {
 	c := Client{
-		URL:    "",
+		URL:    "http://localhost:1",
 		Method: "POST",
 	}
 	_, err := c.Do()
