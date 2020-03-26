@@ -1,4 +1,4 @@
-# Request
+# [Request](https://pkg.go.dev/github.com/monaco-io/request?tab=doc)
 
 HTTP client for golang, Inspired by [axios](https://github.com/axios/axios) [request](https://github.com/psf/requests)
 No 3rd dependency
