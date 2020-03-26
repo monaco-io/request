@@ -31,6 +31,15 @@ func TestEncodeURL(t *testing.T) {
 			want:    "https://google.com/path?a=1&b=2",
 			wantErr: false,
 		},
+		{
+			name: "TestEncodeURL_Error_0",
+			args: args{
+				baseURL: " https://google.com",
+				p:       map[string]string{"a": "1", "b": "2"},
+			},
+			want:    "",
+			wantErr: true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
