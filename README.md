@@ -56,7 +56,7 @@ import (
 
 func main() {
     client := request.Client{
-        URL:    "https://baidu.com",
+        URL:    "https://google.com",
         Method: "GET",
         Params: map[string]string{"hello": "world"},
     }
@@ -79,7 +79,7 @@ import (
 
 func main() {
     client := request.Client{
-        URL:    "https://baidu.com",
+        URL:    "https://google.com",
         Method: "POST",
         Params: map[string]string{"hello": "world"},
         Body:   []byte(`{"hello": "world"}`),
@@ -103,7 +103,7 @@ import (
 
 func main() {
     client := request.Client{
-        URL:         "https://baidu.com",
+        URL:         "https://google.com",
         Method:      "POST",
         ContentType: request.ApplicationXWwwFormURLEncoded, // default is "application/json"
     }
@@ -126,7 +126,7 @@ import (
 
 func main() {
     client := request.Client{
-        URL:       "https://baidu.com",
+        URL:       "https://google.com",
         Method:    "POST",
         BasicAuth: request.BasicAuth{
             Username:"user_xxx",
@@ -153,7 +153,7 @@ import (
 
 func main() {
     client := request.Client{
-        URL:       "https://baidu.com",
+        URL:       "https://google.com",
         Method:    "POST",
         Timeout:   10, // seconds
     }

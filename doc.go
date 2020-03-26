@@ -6,7 +6,7 @@
 // GET
 //
 //     client := request.Client{
-//         URL:    "https://baidu.com",
+//         URL:    "https://google.com",
 //         Method: "GET",
 //         Params: map[string]string{"hello": "world"},
 //     }
@@ -15,7 +15,7 @@
 // POST
 //
 //     client := request.Client{
-//         URL:    "https://baidu.com",
+//         URL:    "https://google.com",
 //         Method: "POST",
 //         Params: map[string]string{"hello": "world"},
 //         Body:   []byte(`{"hello": "world"}`),
@@ -25,7 +25,7 @@
 // Content-Type
 //
 //     client := request.Client{
-//         URL:          "https://baidu.com",
+//         URL:          "https://google.com",
 //         Method:       "POST",
 //         ContentType: request.ApplicationXWwwFormURLEncoded, // default is "application/json"
 //     }
@@ -34,7 +34,7 @@
 // Authorization
 //
 //     client := request.Client{
-//         URL:       "https://baidu.com",
+//         URL:       "https://google.com",
 //         Method:    "POST",
 //         BasicAuth:      request.BasicAuth{
 //             Username:"user_xxx",

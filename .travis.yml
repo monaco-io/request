@@ -4,6 +4,8 @@ go:
   - 1.14.x
   - tip
 
+sudo: false
+
 before_install:
   - go get -t -v ./...
 

@@ -1,14 +1,12 @@
 package request
 
 import (
-	"reflect"
 	"testing"
 )
 
-// TODO: Mock Http Server
-var serverURL = "http://localhost:3000"
+var serverURL = "http://httpbin.org"
 
-func TestClient_Do(t *testing.T) {
+func TestClient_Do_Error(t *testing.T) {
 	type fields struct {
 		URL    string
 		Method string
@@ -25,7 +23,7 @@ func TestClient_Do(t *testing.T) {
 		{
 			name: "TestClient_Do_GET",
 			fields: fields{
-				URL:    serverURL,
+				URL:    serverURL + "/get",
 				Method: "GET",
 			},
 			want:    nil,
@@ -34,7 +32,7 @@ func TestClient_Do(t *testing.T) {
 		{
 			name: "TestClient_Do_GET_1params",
 			fields: fields{
-				URL:    serverURL,
+				URL:    serverURL + "/get",
 				Method: "GET",
 				Params: map[string]string{"package": "request"},
 			},
@@ -44,7 +42,7 @@ func TestClient_Do(t *testing.T) {
 		{
 			name: "TestClient_Do_GET_2params",
 			fields: fields{
-				URL:    serverURL,
+				URL:    serverURL + "/get",
 				Method: "GET",
 				Params: map[string]string{"package": "request", "lang": "golang"},
 			},
@@ -55,7 +53,7 @@ func TestClient_Do(t *testing.T) {
 		{
 			name: "TestClient_Do_POST",
 			fields: fields{
-				URL:    serverURL,
+				URL:    serverURL + "/post",
 				Method: "POST",
 			},
 			want:    nil,
@@ -64,7 +62,7 @@ func TestClient_Do(t *testing.T) {
 		{
 			name: "TestClient_Do_POST_1params",
 			fields: fields{
-				URL:    serverURL,
+				URL:    serverURL + "/post",
 				Method: "POST",
 				Params: map[string]string{"package": "request"},
 			},
@@ -74,7 +72,7 @@ func TestClient_Do(t *testing.T) {
 		{
 			name: "TestClient_Do_POST_1params_body",
 			fields: fields{
-				URL:    serverURL,
+				URL:    serverURL + "/post",
 				Method: "POST",
 				Params: map[string]string{"package": "request"},
 				Header: map[string]string{"Content-Type": "application/json"},
@@ -93,14 +91,61 @@ func TestClient_Do(t *testing.T) {
 				Header: tt.fields.Header,
 				Body:   tt.fields.Body,
 			}
-			got, err := c.Do()
+			_, err := c.Do()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Do() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Do() got = %v, want %v", string(got), tt.want)
-			}
 		})
 	}
+}
+
+func TestClient_Do_Get(t *testing.T) {
+	c := Client{
+		URL:       serverURL + "/get",
+		Method:    "GET",
+		Header:    map[string]string{"Customer-Header": "c-h-value"},
+		Params:    map[string]string{"v1": "1", "v2": "2"},
+		BasicAuth: BasicAuth{Username: "username", Password: "password"},
+	}
+	resp, err := c.Do()
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(string(resp))
+}
+
+// TODO check response json
+func TestClient_Do_Post_Json(t *testing.T) {
+	c := Client{
+		URL:         serverURL + "/post",
+		Method:      "POST",
+		Header:      map[string]string{"Customer-Header": "c-h-value"},
+		Params:      map[string]string{"v1": "1", "v2": "2"},
+		ContentType: ApplicationXWwwFormURLEncoded,
+		Body:        []byte(`{"v3":3, "v4"="4"`),
+		BasicAuth:   BasicAuth{Username: "username", Password: "password"},
+	}
+	resp, err := c.Do()
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(string(resp))
+}
+
+// TODO check response form
+func TestClient_Do_Post(t *testing.T) {
+	c := Client{
+		URL:       serverURL + "/post",
+		Method:    "POST",
+		Header:    map[string]string{"Customer-Header": "c-h-value"},
+		Params:    map[string]string{"v1": "1", "v2": "2"},
+		Body:      []byte(`{"v3":3, "v4"="4"`),
+		BasicAuth: BasicAuth{Username: "username", Password: "password"},
+	}
+	resp, err := c.Do()
+	if err != nil {
+		t.Error(err)
+	}
+	t.Log(string(resp))
 }
