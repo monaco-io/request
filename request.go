@@ -9,20 +9,20 @@ import (
 
 // Do send http request
 func (c *Client) Do() ([]byte, error) {
+	var err error
 	client := &http.Client{
 		Timeout: c.Timeout * time.Second,
 	}
 
 	// encode like https://google.com?hello=world&package=request
-	var encodeError error
-	if c.URL, encodeError = EncodeURL(c.URL, c.Params); encodeError != nil {
-		return []byte{}, encodeError
+	if c.URL, err = EncodeURL(c.URL, c.Params); err != nil {
+		return []byte{}, err
 	}
 
 	// build request
-	_request, buildRequestError := http.NewRequest(c.Method, c.URL, bytes.NewReader(c.Body))
-	if buildRequestError != nil {
-		return []byte{}, buildRequestError
+	_request, err := http.NewRequest(c.Method, c.URL, bytes.NewReader(c.Body))
+	if err != nil {
+		return []byte{}, err
 	}
 
 	// add Header to request
@@ -42,9 +42,9 @@ func (c *Client) Do() ([]byte, error) {
 	}
 
 	// send request and close on func call end
-	resp, respError := client.Do(_request)
-	if respError != nil {
-		return []byte{}, respError
+	resp, err := client.Do(_request)
+	if err != nil {
+		return []byte{}, err
 	}
 	defer func() { _ = resp.Body.Close() }()
 
