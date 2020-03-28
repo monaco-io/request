@@ -1,10 +1,9 @@
-# Request
+# Request [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go) [![Go Report Card](https://goreportcard.com/badge/github.com/monaco-io/request)](https://goreportcard.com/report/github.com/monaco-io/request)
 
 <img align="right" width="159px" src="https://raw.githubusercontent.com/gin-gonic/logo/master/color.png">
 
 [![Build Status](https://travis-ci.org/monaco-io/request.svg?branch=master)](https://travis-ci.org/monaco-io/request)
 [![GoDoc](https://godoc.org/github.com/monaco-io/request?status.svg)](https://pkg.go.dev/github.com/monaco-io/request?tab=doc)
-[![Go Report Card](https://goreportcard.com/badge/github.com/monaco-io/request)](https://goreportcard.com/report/github.com/monaco-io/request)
 [![codecov](https://codecov.io/gh/monaco-io/request/branch/master/graph/badge.svg)](https://codecov.io/gh/monaco-io/request)
 [![Release](https://img.shields.io/github/release/monaco-io/request.svg?style=flat-square)](https://github.com/monaco-io/request/releases)
 [![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/monaco-io/request)](https://www.tickgit.com/browse?repo=github.com/monaco-io/request)
