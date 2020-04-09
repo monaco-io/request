@@ -1,6 +1,9 @@
 package request
 
-import "time"
+import (
+	"net/http"
+	"time"
+)
 
 const (
 	// ApplicationJSON application/json
@@ -39,10 +42,23 @@ type Client struct {
 	BasicAuth   BasicAuth
 	Timeout     time.Duration // second
 	ContentType ContentType
+
+	// private
+	client *http.Client
+	req    *http.Request
 }
 
 // BasicAuth Add Username:Password as Basic Auth
 type BasicAuth struct {
 	Username string
 	Password string
+}
+
+// SugaredResp Sugared response with status code and body data
+type SugaredResp struct {
+	Data []byte
+	Code int
+
+	// private
+	resp *http.Response
 }
