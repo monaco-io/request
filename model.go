@@ -44,8 +44,8 @@ type Client struct {
 	ContentType ContentType
 
 	// private
-	req  *http.Request
-	resp *http.Response
+	client *http.Client
+	req    *http.Request
 }
 
 // BasicAuth Add Username:Password as Basic Auth
@@ -54,5 +54,11 @@ type BasicAuth struct {
 	Password string
 }
 
-type Resp struct {
+// SugaredResp Sugared response with status code and body data
+type SugaredResp struct {
+	Data []byte
+	Code int
+
+	// private
+	resp *http.Response
 }

@@ -8,22 +8,22 @@ import (
 )
 
 // Do send http request
-func (c *Client) Do() (resp []byte, err error) {
-	client := &http.Client{
-		Timeout: c.Timeout * time.Second,
-	}
+func (c *Client) Do() (resp SugaredResp, err error) {
+	defer resp.Close()
+
 	if err := c.buildRequest(); err != nil {
-		return
+		return resp, err
 	}
+
 	// send request and close on func call end
-	response, err := client.Do(c.req)
-	if err != nil {
-		return []byte{}, err
+	if resp.resp, err = c.client.Do(c.req); err != nil {
+		return resp, err
 	}
-	defer func() { _ = response.Body.Close() }()
 
 	// read response data form resp
-	return ioutil.ReadAll(response.Body)
+	resp.Data, err = ioutil.ReadAll(resp.resp.Body)
+	resp.Code = resp.resp.StatusCode
+	return resp, err
 }
 
 func (c *Client) buildRequest() (err error) {
@@ -54,5 +54,29 @@ func (c *Client) buildRequest() (err error) {
 	if c.BasicAuth.Username != "" && c.BasicAuth.Password != "" {
 		c.req.SetBasicAuth(c.BasicAuth.Username, c.BasicAuth.Password)
 	}
-	return nil
+
+	c.client = &http.Client{
+		Timeout: c.Timeout * time.Second,
+	}
+	return err
+}
+
+// GetResp do request and get original http response struct
+func (c *Client) Resp() (resp *http.Response, err error) {
+	if err = c.buildRequest(); err != nil {
+		return resp, err
+	}
+	return c.client.Do(c.req)
+}
+
+func (s *SugaredResp) StatusCode() (code int) {
+	return s.resp.StatusCode
+}
+
+func (s *SugaredResp) Status() (status string) {
+	return s.resp.Status
+}
+
+func (s *SugaredResp) Close() {
+	_ = s.resp.Body.Close()
 }
