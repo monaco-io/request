@@ -1,4 +1,4 @@
-# Request [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go) [![Go Report Card](https://goreportcard.com/badge/github.com/monaco-io/request)](https://goreportcard.com/report/github.com/monaco-io/request)
+# Request [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go) [![Go Report Card](https://goreportcard.com/badge/github.com/monaco-io/request)](https://goreportcard.com/report/github.com/monaco-io/request) ![Go](https://github.com/monaco-io/request/workflows/Go/badge.svg)
 
 <img align="right" width="159px" src="https://raw.githubusercontent.com/gin-gonic/logo/master/color.png">
 
