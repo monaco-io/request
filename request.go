@@ -78,5 +78,7 @@ func (s *SugaredResp) Status() (status string) {
 }
 
 func (s *SugaredResp) Close() {
-	_ = s.resp.Body.Close()
+	if s.resp != nil {
+		_ = s.resp.Body.Close()
+	}
 }
