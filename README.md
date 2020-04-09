@@ -62,7 +62,7 @@ func main() {
     }
     resp, err := client.Do()
 
-    log.Println(string(resp), err)
+    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
 
@@ -86,7 +86,7 @@ func main() {
     }
     resp, err := client.Do()
 
-    log.Println(string(resp), err)
+    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
 
@@ -109,7 +109,7 @@ func main() {
     }
     resp, err := client.Do()
 
-    log.Println(string(resp), err)
+    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
 
@@ -136,7 +136,7 @@ func main() {
 
     resp, err := client.Do()
 
-    log.Println(string(resp), err)
+    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
 
@@ -160,7 +160,7 @@ func main() {
 
     resp, err := client.Do()
 
-    log.Println(string(resp), err)
+    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
 
