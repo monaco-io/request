@@ -1,7 +1,9 @@
 package request
 
 import (
+	"net/http"
 	"testing"
+	"time"
 )
 
 var serverURL = "http://httpbin.org"
@@ -112,7 +114,7 @@ func TestClient_Do_Get(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(string(resp))
+	t.Log(resp.Code, string(resp.Data))
 }
 
 // TODO check response json
@@ -130,7 +132,7 @@ func TestClient_Do_Post_Json(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(string(resp))
+	t.Log(resp.Code, string(resp.Data))
 }
 
 // TODO check response form
@@ -147,7 +149,7 @@ func TestClient_Do_Post(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	t.Log(string(resp))
+	t.Log(resp.Code, string(resp.Data))
 }
 
 func TestClient_Do_Encode_Error(t *testing.T) {
@@ -180,5 +182,226 @@ func TestClient_Do_Resp_Error(t *testing.T) {
 	_, err := c.Do()
 	if err == nil {
 		t.Error(err)
+	}
+}
+
+func TestClient_buildRequest(t *testing.T) {
+	type fields struct {
+		URL         string
+		Method      string
+		Header      map[string]string
+		Params      map[string]string
+		Body        []byte
+		BasicAuth   BasicAuth
+		Timeout     time.Duration
+		ContentType ContentType
+		client      *http.Client
+		req         *http.Request
+		resp        *http.Response
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		wantErr bool
+	}{
+		{
+			name: "TestClient_buildRequest_encode_error",
+			fields: fields{
+				URL:    " " + serverURL + "/post",
+				Method: "POST",
+			},
+			wantErr: true,
+		},
+		{
+			name: "TestClient_buildRequest_encode_error",
+			fields: fields{
+				URL:    serverURL + "/post",
+				Method: " ",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Client{
+				URL:         tt.fields.URL,
+				Method:      tt.fields.Method,
+				Header:      tt.fields.Header,
+				Params:      tt.fields.Params,
+				Body:        tt.fields.Body,
+				BasicAuth:   tt.fields.BasicAuth,
+				Timeout:     tt.fields.Timeout,
+				ContentType: tt.fields.ContentType,
+				client:      tt.fields.client,
+				req:         tt.fields.req,
+			}
+			if err := c.buildRequest(); (err != nil) != tt.wantErr {
+				t.Errorf("buildRequest() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestClient_Resp(t *testing.T) {
+	type fields struct {
+		URL         string
+		Method      string
+		Header      map[string]string
+		Params      map[string]string
+		Body        []byte
+		BasicAuth   BasicAuth
+		Timeout     time.Duration
+		ContentType ContentType
+		client      *http.Client
+		req         *http.Request
+		resp        *http.Response
+	}
+	tests := []struct {
+		name     string
+		fields   fields
+		wantResp *http.Response
+		wantErr  bool
+	}{
+		{
+			name: "TestClient_Resp",
+			fields: fields{
+				URL: serverURL,
+			},
+			wantResp: nil,
+			wantErr:  false,
+		},
+		{
+			name: "TestClient_Resp_error",
+			fields: fields{
+				URL:    "http://localhost:1",
+				Method: "POST",
+			},
+			wantResp: nil,
+			wantErr:  true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Client{
+				URL:         tt.fields.URL,
+				Method:      tt.fields.Method,
+				Header:      tt.fields.Header,
+				Params:      tt.fields.Params,
+				Body:        tt.fields.Body,
+				BasicAuth:   tt.fields.BasicAuth,
+				Timeout:     tt.fields.Timeout,
+				ContentType: tt.fields.ContentType,
+				client:      tt.fields.client,
+				req:         tt.fields.req,
+			}
+			_, err := c.Resp()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Resp() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestClient_Close(t *testing.T) {
+	type fields struct {
+		URL         string
+		Method      string
+		Header      map[string]string
+		Params      map[string]string
+		Body        []byte
+		BasicAuth   BasicAuth
+		Timeout     time.Duration
+		ContentType ContentType
+		client      *http.Client
+		req         *http.Request
+		resp        *http.Response
+	}
+	tests := []struct {
+		name   string
+		fields fields
+	}{
+		{
+			name: "TestClient_Close",
+			fields: fields{
+				URL:    serverURL + "/post",
+				Method: "POST",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Client{
+				URL:         tt.fields.URL,
+				Method:      tt.fields.Method,
+				Header:      tt.fields.Header,
+				Params:      tt.fields.Params,
+				Body:        tt.fields.Body,
+				BasicAuth:   tt.fields.BasicAuth,
+				Timeout:     tt.fields.Timeout,
+				ContentType: tt.fields.ContentType,
+				client:      tt.fields.client,
+				req:         tt.fields.req,
+			}
+			resp, _ := c.Do()
+			resp.Close()
+		})
+	}
+}
+
+func TestClient_StatusCode(t *testing.T) {
+	type fields struct {
+		URL         string
+		Method      string
+		Header      map[string]string
+		Params      map[string]string
+		Body        []byte
+		BasicAuth   BasicAuth
+		Timeout     time.Duration
+		ContentType ContentType
+		client      *http.Client
+		req         *http.Request
+		resp        *http.Response
+	}
+	tests := []struct {
+		name     string
+		fields   fields
+		wantCode int
+	}{
+		{
+			name: "TestClient_StatusCode_200",
+			fields: fields{
+				URL:    serverURL + "/post",
+				Method: "POST",
+			},
+			wantCode: 200,
+		},
+		{
+			name: "TestClient_StatusCode_500",
+			fields: fields{
+				URL:    serverURL + "/get",
+				Method: "POST",
+			},
+			wantCode: 405,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Client{
+				URL:         tt.fields.URL,
+				Method:      tt.fields.Method,
+				Header:      tt.fields.Header,
+				Params:      tt.fields.Params,
+				Body:        tt.fields.Body,
+				BasicAuth:   tt.fields.BasicAuth,
+				Timeout:     tt.fields.Timeout,
+				ContentType: tt.fields.ContentType,
+				client:      tt.fields.client,
+				req:         tt.fields.req,
+			}
+			resp, _ := c.Do()
+			if gotCode := resp.StatusCode(); gotCode != tt.wantCode {
+				t.Errorf("StatusCode() = %v, want %v", gotCode, tt.wantCode)
+			}
+		})
 	}
 }

@@ -8,21 +8,35 @@ import (
 )
 
 // Do send http request
-func (c *Client) Do() ([]byte, error) {
-	var err error
-	client := &http.Client{
-		Timeout: c.Timeout * time.Second,
+func (c *Client) Do() (resp SugaredResp, err error) {
+	defer resp.Close()
+
+	if err := c.buildRequest(); err != nil {
+		return resp, err
 	}
+
+	// send request and close on func call end
+	if resp.resp, err = c.client.Do(c.req); err != nil {
+		return resp, err
+	}
+
+	// read response data form resp
+	resp.Data, err = ioutil.ReadAll(resp.resp.Body)
+	resp.Code = resp.resp.StatusCode
+	return resp, err
+}
+
+func (c *Client) buildRequest() (err error) {
 
 	// encode like https://google.com?hello=world&package=request
 	if c.URL, err = EncodeURL(c.URL, c.Params); err != nil {
-		return []byte{}, err
+		return err
 	}
 
 	// build request
-	_request, err := http.NewRequest(c.Method, c.URL, bytes.NewReader(c.Body))
+	c.req, err = http.NewRequest(c.Method, c.URL, bytes.NewReader(c.Body))
 	if err != nil {
-		return []byte{}, err
+		return err
 	}
 
 	// add Header to request
@@ -30,24 +44,39 @@ func (c *Client) Do() ([]byte, error) {
 		if c.ContentType == "" {
 			c.ContentType = ApplicationJSON
 		}
-		_request.Header.Set("Content-Type", string(c.ContentType))
+		c.req.Header.Set("Content-Type", string(c.ContentType))
 	}
 	for k, v := range c.Header {
-		_request.Header.Add(k, v)
+		c.req.Header.Add(k, v)
 	}
 
 	// set basic Auth of request
 	if c.BasicAuth.Username != "" && c.BasicAuth.Password != "" {
-		_request.SetBasicAuth(c.BasicAuth.Username, c.BasicAuth.Password)
+		c.req.SetBasicAuth(c.BasicAuth.Username, c.BasicAuth.Password)
 	}
 
-	// send request and close on func call end
-	resp, err := client.Do(_request)
-	if err != nil {
-		return []byte{}, err
+	c.client = &http.Client{
+		Timeout: c.Timeout * time.Second,
 	}
-	defer func() { _ = resp.Body.Close() }()
+	return err
+}
 
-	// read response data form resp
-	return ioutil.ReadAll(resp.Body)
+// GetResp do request and get original http response struct
+func (c *Client) Resp() (resp *http.Response, err error) {
+	if err = c.buildRequest(); err != nil {
+		return resp, err
+	}
+	return c.client.Do(c.req)
+}
+
+func (s *SugaredResp) StatusCode() (code int) {
+	return s.resp.StatusCode
+}
+
+func (s *SugaredResp) Status() (status string) {
+	return s.resp.Status
+}
+
+func (s *SugaredResp) Close() {
+	_ = s.resp.Body.Close()
 }
