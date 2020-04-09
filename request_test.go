@@ -262,27 +262,27 @@ func TestClient_Resp(t *testing.T) {
 		wantResp *http.Response
 		wantErr  bool
 	}{
-		{
-			name: "TestClient_Resp",
-			fields: fields{
-				URL: serverURL,
-			},
-			wantResp: nil,
-			wantErr:  false,
-		},
-		{
-			name: "TestClient_Resp_error",
-			fields: fields{
-				URL:    "http://localhost:1",
-				Method: "POST",
-			},
-			wantResp: nil,
-			wantErr:  true,
-		},
+		//{
+		//	name: "TestClient_Resp",
+		//	fields: fields{
+		//		URL: serverURL,
+		//	},
+		//	wantResp: nil,
+		//	wantErr:  false,
+		//},
+		//{
+		//	name: "TestClient_Resp_error",
+		//	fields: fields{
+		//		URL:    "http://localhost:1",
+		//		Method: "POST",
+		//	},
+		//	wantResp: nil,
+		//	wantErr:  true,
+		//},
 		{
 			name: "TestClient_Resp_build_error",
 			fields: fields{
-				URL:    " ",
+				URL:    " " + serverURL + "/post",
 				Method: "POST",
 			},
 			wantResp: nil,
