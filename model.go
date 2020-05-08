@@ -41,6 +41,7 @@ type Client struct {
 	Body        []byte
 	BasicAuth   BasicAuth
 	Timeout     time.Duration // second
+	ProxyURL    string
 	ContentType ContentType
 
 	// private

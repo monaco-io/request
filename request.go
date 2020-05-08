@@ -2,8 +2,10 @@ package request
 
 import (
 	"bytes"
+	"crypto/tls"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -55,13 +57,25 @@ func (c *Client) buildRequest() (err error) {
 		c.req.SetBasicAuth(c.BasicAuth.Username, c.BasicAuth.Password)
 	}
 
-	c.client = &http.Client{
-		Timeout: c.Timeout * time.Second,
+	c.client = &http.Client{}
+
+	if c.Timeout > 0 {
+		c.client.Timeout = c.Timeout * time.Second
 	}
+
+	if c.ProxyURL != "" {
+		if proxy, err := url.Parse(c.ProxyURL); err == nil && proxy != nil {
+			c.client.Transport = &http.Transport{
+				Proxy:           http.ProxyURL(proxy),
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+			}
+		}
+	}
+
 	return err
 }
 
-// GetResp do request and get original http response struct
+// Resp do request and get original http response struct
 func (c *Client) Resp() (resp *http.Response, err error) {
 	if err = c.buildRequest(); err != nil {
 		return resp, err
