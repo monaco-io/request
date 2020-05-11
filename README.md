@@ -164,6 +164,34 @@ func main() {
 }
 ```
 
+### Cookies
+
+```go
+package main
+
+import (
+    "log"
+
+    "github.com/monaco-io/request"
+)
+
+func main() {
+    client := request.Client{
+        URL:       "https://google.com",
+        Cookies:[]*http.Cookie{
+             {
+              Name:  "cookie_name",
+              Value: "cookie_value",
+             },
+        },
+    }
+
+    resp, err := client.Do()
+
+    log.Println(resp.Code, string(resp.Data), err)
+}
+```
+
 ## License
 
 [MIT](LICENSE)

@@ -428,7 +428,7 @@ func TestClient_Do_Proxy(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "TestClient_Do_Proxy_err",
+			name: "err",
 			fields: fields{
 				URL:      serverURL + "/get",
 				Method:   "GET",
@@ -438,7 +438,7 @@ func TestClient_Do_Proxy(t *testing.T) {
 			wantErr: true,
 		},
 		{
-			name: "TestClient_Do_Proxy_err",
+			name: "success",
 			fields: fields{
 				URL:      serverURL + "/get",
 				Method:   "GET",
@@ -457,6 +457,50 @@ func TestClient_Do_Proxy(t *testing.T) {
 				Header:   tt.fields.Header,
 				Body:     tt.fields.Body,
 				ProxyURL: tt.fields.ProxyURL,
+			}
+			_, err := c.Do()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Do() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+		})
+	}
+}
+
+func TestClient_Do_Cookies(t *testing.T) {
+	type fields struct {
+		URL     string
+		Method  string
+		Cookies []*http.Cookie
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		want    []byte
+		wantErr bool
+	}{
+		{
+			name: "cookie",
+			fields: fields{
+				URL:    serverURL + "/get",
+				Method: "GET",
+				Cookies: []*http.Cookie{
+					{
+						Name:  "cookie_name",
+						Value: "cookie_value",
+					},
+				},
+			},
+			want:    nil,
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Client{
+				URL:     tt.fields.URL,
+				Method:  tt.fields.Method,
+				Cookies: tt.fields.Cookies,
 			}
 			_, err := c.Do()
 			if (err != nil) != tt.wantErr {

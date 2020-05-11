@@ -43,6 +43,7 @@ type Client struct {
 	Timeout     time.Duration // second
 	ProxyURL    string
 	ContentType ContentType
+	Cookies     []*http.Cookie
 
 	// private
 	client *http.Client

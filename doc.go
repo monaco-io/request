@@ -43,4 +43,17 @@
 //     }
 //
 //     resp, err := client.Do()
+//
+// Cookies
+//     client := request.Client{
+//         URL:       "https://google.com",
+//         Cookies:[]*http.Cookie{
+//              {
+//               Name:  "cookie_name",
+//               Value: "cookie_value",
+//              },
+//         },
+//     }
+//
+//     resp, err := client.Do()
 package request
