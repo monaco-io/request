@@ -14,39 +14,48 @@ import (
 func (c *Client) Do() (resp SugaredResp, err error) {
 	defer resp.Close()
 
-	if err := c.buildRequest(); err != nil {
-		return resp, err
+	if err = c.buildRequest(); err != nil {
+		return
 	}
 
 	// send request and close on func call end
 	if resp.resp, err = c.client.Do(c.req); err != nil {
-		return resp, err
+		return
 	}
 
 	// read response data form resp
 	resp.Data, err = ioutil.ReadAll(resp.resp.Body)
 	resp.Code = resp.resp.StatusCode
-	return resp, err
+	return
 }
 
 func (c *Client) buildRequest() (err error) {
+	if err = c.applyRequest(); err != nil {
+		return
+	}
+	c.applyHTTPMethod()
+	c.applyBasicAuth()
+	c.applyClient()
+	c.applyTimeout()
+	c.applyCookies()
+	c.applyProxy()
+	return
+}
 
+func (c *Client) applyRequest() (err error) {
 	// encode requestURL.httpURL like https://google.com?hello=world&package=request
-	ru := requestURL{
+	c.requestURL = requestURL{
 		urlString:  c.URL,
 		parameters: c.Params,
 	}
-	if err := ru.EncodeURL(); err != nil {
-		return err
+	if err = c.requestURL.EncodeURL(); err != nil {
+		return
 	}
+	c.req, err = http.NewRequest(c.Method, c.requestURL.string(), bytes.NewReader(c.Body))
+	return
+}
 
-	// build request
-	c.req, err = http.NewRequest(c.Method, ru.string(), bytes.NewReader(c.Body))
-	if err != nil {
-		return err
-	}
-
-	// apply Header to request
+func (c *Client) applyHTTPMethod() {
 	if c.Method == "POST" {
 		if c.ContentType == "" {
 			c.ContentType = ApplicationJSON
@@ -56,27 +65,34 @@ func (c *Client) buildRequest() (err error) {
 	for k, v := range c.Header {
 		c.req.Header.Add(k, v)
 	}
+}
 
-	// apply basic Auth of request header
+func (c *Client) applyBasicAuth() {
 	if c.BasicAuth.Username != "" && c.BasicAuth.Password != "" {
 		c.req.SetBasicAuth(c.BasicAuth.Username, c.BasicAuth.Password)
 	}
+}
 
+func (c *Client) applyClient() {
 	c.client = &http.Client{}
+}
 
-	// apply timeout
+func (c *Client) applyTimeout() {
 	if c.Timeout > 0 {
 		c.client.Timeout = c.Timeout * time.Second
 	}
+}
 
-	// apply cookies
+func (c *Client) applyCookies() {
 	if c.Cookies != nil {
 		jar, _ := cookiejar.New(nil)
-		jar.SetCookies(&url.URL{Scheme: ru.scheme(), Host: ru.host()}, c.Cookies)
+		jar.SetCookies(&url.URL{Scheme: c.requestURL.scheme(), Host: c.requestURL.host()}, c.Cookies)
 		c.client.Jar = jar
 	}
+}
 
-	// apply proxy
+// TODO: raise proxy error
+func (c *Client) applyProxy() {
 	if c.ProxyURL != "" {
 		if proxy, err := url.Parse(c.ProxyURL); err == nil && proxy != nil {
 			c.client.Transport = &http.Transport{
@@ -85,8 +101,6 @@ func (c *Client) buildRequest() (err error) {
 			}
 		}
 	}
-
-	return err
 }
 
 // Resp do request and get original http response struct

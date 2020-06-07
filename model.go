@@ -46,8 +46,9 @@ type Client struct {
 	Cookies     []*http.Cookie
 
 	// private
-	client *http.Client
-	req    *http.Request
+	client     *http.Client
+	requestURL requestURL
+	req        *http.Request
 }
 
 // BasicAuth Add Username:Password as Basic Auth
