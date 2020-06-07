@@ -18,7 +18,7 @@ func (c *Client) buildRequest() (err error) {
 	c.applyClient()
 	c.applyTimeout()
 	c.applyCookies()
-	c.applyProxy()
+	err = c.applyProxy()
 	return
 }
 
