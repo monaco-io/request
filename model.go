@@ -5,19 +5,12 @@ import (
 	"time"
 )
 
-const (
-	// ApplicationJSON application/json
-	ApplicationJSON ContentType = "application/json"
-
-	// ApplicationXWwwFormURLEncoded application/x-www-form-urlencoded
-	ApplicationXWwwFormURLEncoded ContentType = "application/x-www-form-urlencoded"
-
-	// MultipartFormData multipart/form-data
-	MultipartFormData ContentType = "multipart/form-data"
-)
-
 // ContentType Content-Type
 type ContentType string
+
+// Method http method
+// TODO:
+type Method string
 
 // Client Method
 /*

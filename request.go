@@ -56,11 +56,11 @@ func (c *Client) applyRequest() (err error) {
 }
 
 func (c *Client) applyHTTPMethod() {
-	if c.Method == "POST" {
-		if c.ContentType == "" {
+	if c.Method == POST {
+		if c.ContentType == emptyString {
 			c.ContentType = ApplicationJSON
 		}
-		c.req.Header.Set("Content-Type", string(c.ContentType))
+		c.req.Header.Set(contentType, string(c.ContentType))
 	}
 	for k, v := range c.Header {
 		c.req.Header.Add(k, v)
@@ -68,7 +68,7 @@ func (c *Client) applyHTTPMethod() {
 }
 
 func (c *Client) applyBasicAuth() {
-	if c.BasicAuth.Username != "" && c.BasicAuth.Password != "" {
+	if c.BasicAuth.Username != emptyString && c.BasicAuth.Password != emptyString {
 		c.req.SetBasicAuth(c.BasicAuth.Username, c.BasicAuth.Password)
 	}
 }
@@ -93,7 +93,7 @@ func (c *Client) applyCookies() {
 
 // TODO: raise proxy error
 func (c *Client) applyProxy() {
-	if c.ProxyURL != "" {
+	if c.ProxyURL != emptyString {
 		if proxy, err := url.Parse(c.ProxyURL); err == nil && proxy != nil {
 			c.client.Transport = &http.Transport{
 				Proxy:           http.ProxyURL(proxy),
