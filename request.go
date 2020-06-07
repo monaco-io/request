@@ -106,7 +106,7 @@ func (c *Client) applyProxy() {
 // Resp do request and get original http response struct
 func (c *Client) Resp() (resp *http.Response, err error) {
 	if err = c.buildRequest(); err != nil {
-		return resp, err
+		return
 	}
 	return c.client.Do(c.req)
 }
