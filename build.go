@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// TODO: func unit test coverage
 func (c *Client) buildRequest() (err error) {
 	if err = c.applyRequest(); err != nil {
 		return

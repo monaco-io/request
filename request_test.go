@@ -23,7 +23,7 @@ func TestClient_Do(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "TestClient_Do_GET",
+			name: "get",
 			fields: fields{
 				URL:    serverURL + "/get",
 				Method: "GET",
@@ -32,7 +32,7 @@ func TestClient_Do(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "TestClient_Do_GET_1params",
+			name: "get with params",
 			fields: fields{
 				URL:    serverURL + "/get",
 				Method: "GET",
@@ -42,7 +42,7 @@ func TestClient_Do(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "TestClient_Do_GET_2params",
+			name: "get with 2 params",
 			fields: fields{
 				URL:    serverURL + "/get",
 				Method: "GET",
@@ -53,7 +53,7 @@ func TestClient_Do(t *testing.T) {
 		},
 
 		{
-			name: "TestClient_Do_POST",
+			name: "post",
 			fields: fields{
 				URL:    serverURL + "/post",
 				Method: "POST",
@@ -62,7 +62,7 @@ func TestClient_Do(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "TestClient_Do_POST_1params",
+			name: "post with params",
 			fields: fields{
 				URL:    serverURL + "/post",
 				Method: "POST",
@@ -72,7 +72,7 @@ func TestClient_Do(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "TestClient_Do_POST_1params_body",
+			name: "post with 2 params",
 			fields: fields{
 				URL:    serverURL + "/post",
 				Method: "POST",
