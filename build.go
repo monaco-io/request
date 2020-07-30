@@ -91,7 +91,6 @@ func (c *Client) applyProxy() (err error) {
 }
 
 func (c *Client) applyTLSConfig() {
-	// &tls.Config{InsecureSkipVerify: true}
 	if c.TLSConfig != nil {
 		c.transport.TLSClientConfig = c.TLSConfig
 	}

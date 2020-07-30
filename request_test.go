@@ -373,11 +373,11 @@ func TestClient_Do_Timeout(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "TestClient_Do_Proxy_err",
+			name: "TestClient_Do_Proxy_succeed",
 			fields: fields{
 				URL:     serverURL + "/get",
 				Method:  "GET",
-				Timeout: 1,
+				Timeout: time.Second,
 			},
 			want:    nil,
 			wantErr: false,
