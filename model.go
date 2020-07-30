@@ -37,6 +37,7 @@ type Client struct {
 	ProxyURL    string
 	ContentType ContentType
 	Cookies     []*http.Cookie
+	DisableTLS  bool
 
 	// private
 	client     *http.Client

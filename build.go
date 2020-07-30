@@ -19,6 +19,7 @@ func (c *Client) buildRequest() (err error) {
 	c.applyClient()
 	c.applyTimeout()
 	c.applyCookies()
+	c.applyTLSConfig(false, nil)
 	err = c.applyProxy()
 	return
 }
@@ -79,11 +80,22 @@ func (c *Client) applyProxy() (err error) {
 		if proxy, err = url.Parse(c.ProxyURL); err != nil {
 			return
 		} else if proxy != nil {
-			c.client.Transport = &http.Transport{
-				Proxy:           http.ProxyURL(proxy),
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-			}
+			c.applyTLSConfig(true, proxy)
+
 		}
 	}
 	return
+}
+
+func (c *Client) applyTLSConfig(withProxy bool, proxy *url.URL) {
+	if withProxy {
+		c.client.Transport = &http.Transport{
+			Proxy:           http.ProxyURL(proxy),
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+	} else if c.DisableTLS {
+		c.client.Transport = &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+	}
 }
