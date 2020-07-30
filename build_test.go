@@ -60,6 +60,7 @@ func TestClient_applyProxy(t *testing.T) {
 				req:         tt.fields.req,
 			}
 			c.applyClient()
+			c.buildRequest()
 			if err := c.applyProxy(); (err != nil) != tt.wantErr {
 				t.Errorf("Client.applyProxy() error = %v, wantErr %v", err, tt.wantErr)
 			}
