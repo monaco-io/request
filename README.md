@@ -191,6 +191,31 @@ func main() {
 }
 ```
 
+
+### TLS
+
+```go
+package main
+
+import (
+    "log"
+	"crypto/tls"
+
+    "github.com/monaco-io/request"
+)
+
+func main() {
+    client := request.Client{
+        URL:       "https://google.com",
+        TLSConfig: &tls.Config{InsecureSkipVerify: true},
+    }
+
+    resp, err := client.Do()
+
+    log.Println(resp.Code, string(resp.Data), err)
+}
+```
+
 ## License
 
 [MIT](LICENSE)

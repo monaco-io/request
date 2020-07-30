@@ -1,6 +1,7 @@
 package request
 
 import (
+	"crypto/tls"
 	"net/http"
 	"time"
 )
@@ -37,12 +38,13 @@ type Client struct {
 	ProxyURL    string
 	ContentType ContentType
 	Cookies     []*http.Cookie
-	DisableTLS  bool
+	TLSConfig   *tls.Config
 
 	// private
 	client     *http.Client
 	requestURL requestURL
 	req        *http.Request
+	transport  *http.Transport
 }
 
 // BasicAuth Add Username:Password as Basic Auth

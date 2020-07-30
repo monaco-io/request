@@ -2,7 +2,6 @@ package request
 
 import (
 	"bytes"
-	"crypto/tls"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -14,13 +13,18 @@ func (c *Client) buildRequest() (err error) {
 	if err = c.applyRequest(); err != nil {
 		return
 	}
+
+	c.transport = &http.Transport{}
+
 	c.applyHTTPHeader()
 	c.applyBasicAuth()
 	c.applyClient()
 	c.applyTimeout()
 	c.applyCookies()
-	c.applyTLSConfig(false, nil)
+	c.applyTLSConfig()
 	err = c.applyProxy()
+
+	c.client.Transport = c.transport
 	return
 }
 
@@ -80,22 +84,15 @@ func (c *Client) applyProxy() (err error) {
 		if proxy, err = url.Parse(c.ProxyURL); err != nil {
 			return
 		} else if proxy != nil {
-			c.applyTLSConfig(true, proxy)
-
+			c.transport.Proxy = http.ProxyURL(proxy)
 		}
 	}
 	return
 }
 
-func (c *Client) applyTLSConfig(withProxy bool, proxy *url.URL) {
-	if withProxy {
-		c.client.Transport = &http.Transport{
-			Proxy:           http.ProxyURL(proxy),
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		}
-	} else if c.DisableTLS {
-		c.client.Transport = &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		}
+func (c *Client) applyTLSConfig() {
+	// &tls.Config{InsecureSkipVerify: true}
+	if c.TLSConfig != nil {
+		c.transport.TLSClientConfig = c.TLSConfig
 	}
 }
