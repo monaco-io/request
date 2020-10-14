@@ -82,10 +82,10 @@ func TestClient_applyTLSConfig(t *testing.T) {
 		ContentType ContentType
 		Cookies     []*http.Cookie
 		TLSConfig   *tls.Config
+		Transport   *http.Transport
 		client      *http.Client
 		requestURL  requestURL
 		req         *http.Request
-		transport   *http.Transport
 	}
 	tests := []struct {
 		name   string
@@ -121,7 +121,7 @@ func TestClient_applyTLSConfig(t *testing.T) {
 				client:      tt.fields.client,
 				requestURL:  tt.fields.requestURL,
 				req:         tt.fields.req,
-				transport:   tt.fields.transport,
+				Transport:   tt.fields.Transport,
 			}
 			c.buildRequest()
 			c.applyTLSConfig()

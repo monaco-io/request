@@ -14,17 +14,18 @@ func (c *Client) buildRequest() (err error) {
 		return
 	}
 
-	c.transport = &http.Transport{}
-
 	c.applyHTTPHeader()
 	c.applyBasicAuth()
 	c.applyClient()
 	c.applyTimeout()
 	c.applyCookies()
+	// Apply transport needs to be called before TLSConfig as TLSConfig modifies
+	// the http transport
+	c.applyTransport()
 	c.applyTLSConfig()
 	err = c.applyProxy()
 
-	c.client.Transport = c.transport
+	c.client.Transport = c.Transport
 	return
 }
 
@@ -84,7 +85,7 @@ func (c *Client) applyProxy() (err error) {
 		if proxy, err = url.Parse(c.ProxyURL); err != nil {
 			return
 		} else if proxy != nil {
-			c.transport.Proxy = http.ProxyURL(proxy)
+			c.Transport.Proxy = http.ProxyURL(proxy)
 		}
 	}
 	return
@@ -92,6 +93,12 @@ func (c *Client) applyProxy() (err error) {
 
 func (c *Client) applyTLSConfig() {
 	if c.TLSConfig != nil {
-		c.transport.TLSClientConfig = c.TLSConfig
+		c.Transport.TLSClientConfig = c.TLSConfig
+	}
+}
+
+func (c *Client) applyTransport() {
+	if c.Transport == nil {
+		c.Transport = &http.Transport{}
 	}
 }
