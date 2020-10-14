@@ -39,6 +39,7 @@ type Client struct {
 	ContentType ContentType
 	Cookies     []*http.Cookie
 	TLSConfig   *tls.Config
+	Transport   *http.Transport
 
 	// private
 	client     *http.Client

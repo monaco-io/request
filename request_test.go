@@ -1,6 +1,7 @@
 package request
 
 import (
+	"net"
 	"net/http"
 	"testing"
 	"time"
@@ -501,6 +502,64 @@ func TestClient_Do_Cookies(t *testing.T) {
 				URL:     tt.fields.URL,
 				Method:  tt.fields.Method,
 				Cookies: tt.fields.Cookies,
+			}
+			_, err := c.Do()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Do() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+		})
+	}
+}
+
+func TestClient_Do_Transport(t *testing.T) {
+
+	type fields struct {
+		URL       string
+		Method    string
+		Params    map[string]string
+		Header    map[string]string
+		Body      []byte
+		Transport *http.Transport
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		want    []byte
+		wantErr bool
+	}{
+		{
+			name: "TestClient_Do_Transport_succeed",
+			fields: fields{
+				URL:    serverURL + "/get",
+				Method: "GET",
+				Transport: &http.Transport{
+					Proxy: http.ProxyFromEnvironment,
+					DialContext: (&net.Dialer{
+						Timeout:   30 * time.Second,
+						KeepAlive: 30 * time.Second,
+						DualStack: true,
+					}).DialContext,
+					ForceAttemptHTTP2:     true,
+					MaxIdleConns:          200,
+					IdleConnTimeout:       90 * time.Second,
+					TLSHandshakeTimeout:   10 * time.Second,
+					ExpectContinueTimeout: 1 * time.Second,
+				},
+			},
+			want:    nil,
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Client{
+				URL:       tt.fields.URL,
+				Method:    tt.fields.Method,
+				Params:    tt.fields.Params,
+				Header:    tt.fields.Header,
+				Body:      tt.fields.Body,
+				Transport: tt.fields.Transport,
 			}
 			_, err := c.Do()
 			if (err != nil) != tt.wantErr {
