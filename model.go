@@ -45,7 +45,6 @@ type Client struct {
 	client     *http.Client
 	requestURL requestURL
 	req        *http.Request
-	transport  *http.Transport
 }
 
 // BasicAuth Add Username:Password as Basic Auth
