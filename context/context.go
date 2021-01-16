@@ -6,9 +6,9 @@ import (
 
 // Context  HTTP transactions
 type Context struct {
-	Client   *http.Client
-	Request  *http.Request
-	Response *http.Response
+	Client   *http.Client   `json:"client,omitempty"`
+	Request  *http.Request  `json:"request,omitempty"`
+	Response *http.Response `json:"response,omitempty"`
 }
 
 // New creates an empty Context
