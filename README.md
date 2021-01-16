@@ -18,7 +18,6 @@ No 3rd dependency.
 ## Features
 
 - Make [http](https://golang.org) requests from Golang
-- Intercept request and response
 - Transform request and response data
 
 ## Installing
@@ -58,10 +57,6 @@ func main() {
         URL:    "https://google.com",
         Method: "GET",
         Params: map[string]string{"hello": "world"},
-    }
-    resp, err := client.Do()
-
-    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
 
@@ -82,33 +77,6 @@ func main() {
         Method: "POST",
         Params: map[string]string{"hello": "world"},
         Body:   []byte(`{"hello": "world"}`),
-    }
-    resp, err := client.Do()
-
-    log.Println(resp.Code, string(resp.Data), err)
-}
-```
-
-### Content-Type
-
-```go
-package main
-
-import (
-    "log"
-
-    "github.com/monaco-io/request"
-)
-
-func main() {
-    client := request.Client{
-        URL:         "https://google.com",
-        Method:      "POST",
-        ContentType: request.ApplicationXWwwFormURLEncoded, // default is "application/json"
-    }
-    resp, err := client.Do()
-
-    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
 
@@ -130,12 +98,8 @@ func main() {
         BasicAuth: request.BasicAuth{
             Username:"user_xxx",
             Password:"pwd_xxx",
-        }, // xxx:xxx
+        },
     }
-
-    resp, err := client.Do()
-
-    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
 
@@ -146,7 +110,7 @@ package main
 
 import (
     "log"
-
+    "time"
     "github.com/monaco-io/request"
 )
 
@@ -154,12 +118,8 @@ func main() {
     client := request.Client{
         URL:       "https://google.com",
         Method:    "POST",
-        Timeout:   10, // seconds
+        Timeout:   time.Second*10,
     }
-
-    resp, err := client.Do()
-
-    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
 
@@ -177,20 +137,12 @@ import (
 func main() {
     client := request.Client{
         URL:       "https://google.com",
-        Cookies:[]*http.Cookie{
-             {
-              Name:  "cookie_name",
-              Value: "cookie_value",
-             },
-        },
+        CookiesMap: map[string]string{
+            "cookie_name": "cookie_value",
+        }
     }
-
-    resp, err := client.Do()
-
-    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
-
 
 ### TLS
 
@@ -209,10 +161,6 @@ func main() {
         URL:       "https://google.com",
         TLSConfig: &tls.Config{InsecureSkipVerify: true},
     }
-
-    resp, err := client.Do()
-
-    log.Println(resp.Code, string(resp.Data), err)
 }
 ```
 

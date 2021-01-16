@@ -6,13 +6,6 @@ import (
 	"time"
 )
 
-// ContentType Content-Type
-type ContentType string
-
-// Method http method
-// TODO:
-type Method string
-
 // Client Method
 /*
      Method         = "OPTIONS"                ; Section 9.2
@@ -28,23 +21,25 @@ type Method string
      token          = 1*<any CHAR except CTLs or separators>
 */
 type Client struct {
-	URL         string
-	Method      string
-	Header      map[string]string
-	Params      map[string]string
-	Body        []byte
-	BasicAuth   BasicAuth
-	Timeout     time.Duration // second
-	ProxyURL    string
-	ContentType ContentType
-	Cookies     []*http.Cookie
-	TLSConfig   *tls.Config
-	Transport   *http.Transport
-
-	// private
-	client     *http.Client
-	requestURL requestURL
-	req        *http.Request
+	URL          string
+	Method       string
+	Header       map[string]string
+	Query        map[string]string
+	BodyJSON     interface{}
+	BodyXML      interface{}
+	BodyString   string
+	BasicAuth    BasicAuth
+	CustomerAuth string
+	Bearer       string
+	Timeout      time.Duration
+	TLSTimeout   time.Duration
+	DialTimeout  time.Duration
+	ProxyURL     string
+	ProxyServers map[string]string
+	Cookies      []*http.Cookie
+	CookiesMap   map[string]string
+	TLSConfig    *tls.Config
+	Transport    *http.Transport
 }
 
 // BasicAuth Add Username:Password as Basic Auth
@@ -53,11 +48,31 @@ type BasicAuth struct {
 	Password string
 }
 
-// SugaredResp Sugared response with status code and body data
-type SugaredResp struct {
-	Data []byte
-	Code int
+const (
+	// OPTIONS http options
+	OPTIONS = "OPTIONS"
 
-	// private
-	resp *http.Response
-}
+	// GET http get
+	GET = "GET"
+
+	// HEAD http head
+	HEAD = "HEAD"
+
+	// POST http post
+	POST = "POST"
+
+	// PUT http put
+	PUT = "PUT"
+
+	// DELETE http delete
+	DELETE = "DELETE"
+
+	// TRACE http trace
+	TRACE = "TRACE"
+
+	// CONNECT http connect
+	CONNECT = "CONNECT"
+
+	// PATCH http patch
+	PATCH = "PATCH"
+)
