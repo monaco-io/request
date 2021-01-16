@@ -8,7 +8,7 @@
 //     client := request.Client{
 //         URL:    "https://google.com",
 //         Method: "GET",
-//         Params: map[string]string{"hello": "world"},
+//         Query: map[string]string{"hello": "world"},
 //     }
 //     resp := client.Send()
 //
@@ -17,7 +17,7 @@
 //     client := request.Client{
 //         URL:    "https://google.com",
 //         Method: "POST",
-//         Params: map[string]string{"hello": "world"},
+//         Query: map[string]string{"hello": "world"},
 //         Body:   []byte(`{"hello": "world"}`),
 //     }
 //     resp := client.Send()

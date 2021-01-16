@@ -41,25 +41,6 @@ go get github.com/monaco-io/request
 
 ## Example
 
-### GET
-
-```go
-package main
-
-import (
-    "log"
-
-    "github.com/monaco-io/request"
-)
-
-func main() {
-    client := request.Client{
-        URL:    "https://google.com",
-        Method: "GET",
-        Params: map[string]string{"hello": "world"},
-}
-```
-
 ### POST
 
 ```go
@@ -75,11 +56,15 @@ func main() {
     client := request.Client{
         URL:    "https://google.com",
         Method: "POST",
-        Params: map[string]string{"hello": "world"},
+        Query: map[string]string{"hello": "world"},
         Body:   []byte(`{"hello": "world"}`),
     }
     var result interface{}
-    err = client.Send().Scan(&result).Error()
+    resp := client.Send()
+    err := resp.Scan(&result).Error()
+    str := resp.String()
+    bytes := resp.Bytes()
+    ...
 ```
 
 ### Authorization
