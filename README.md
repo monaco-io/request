@@ -77,7 +77,9 @@ func main() {
         Method: "POST",
         Params: map[string]string{"hello": "world"},
         Body:   []byte(`{"hello": "world"}`),
-}
+    }
+    var result interface{}
+    err = client.Send().Scan(&result).Error()
 ```
 
 ### Authorization
