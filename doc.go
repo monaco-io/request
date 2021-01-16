@@ -18,7 +18,7 @@
 //         URL:    "https://google.com",
 //         Method: "POST",
 //         Query: map[string]string{"hello": "world"},
-//         Body:   []byte(`{"hello": "world"}`),
+//         BodyJSON:   []byte(`{"hello": "world"}`),
 //     }
 //     resp := client.Send()
 //

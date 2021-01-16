@@ -57,7 +57,7 @@ func main() {
         URL:    "https://google.com",
         Method: "POST",
         Query: map[string]string{"hello": "world"},
-        Body:   []byte(`{"hello": "world"}`),
+        BodyJSON:   []byte(`{"hello": "world"}`),
     }
     var result interface{}
     resp := client.Send()
