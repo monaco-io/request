@@ -45,7 +45,6 @@ func TestClient_Send(t *testing.T) {
 				Timeout:     time.Second * 10,
 				TLSTimeout:  time.Second * 10,
 				DialTimeout: time.Second * 10,
-				ProxyURL:    "http://www.google.com",
 				CookiesMap:  map[string]string{"google": "google"},
 				TLSConfig:   &tls.Config{},
 				Transport:   &http.Transport{},
