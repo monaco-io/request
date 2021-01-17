@@ -9,10 +9,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/monaco-io/request/context"
-	"github.com/monaco-io/request/request"
 	"gopkg.in/yaml.v2"
 )
 
@@ -122,9 +120,9 @@ func (s *Sugar) Scan(data interface{}) *Sugar {
 		return s
 	}
 	switch ct := s.ContentType(); {
-	case strings.HasPrefix(ct, request.ContentTypes[request.JSON]):
+	case context.ContentTypeValid(ct, context.JSON):
 		s.ScanJSON(data)
-	case strings.HasPrefix(ct, request.ContentTypes[request.XML]):
+	case context.ContentTypeValid(ct, context.XML):
 		s.ScanXML(data)
 	default:
 		s.ctx.SetError(fmt.Errorf("content type unsupported: %s", ct))

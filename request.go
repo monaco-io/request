@@ -43,6 +43,6 @@ func (c *Client) Send() *response.Sugar {
 }
 
 // New a empty request
-func New() *Client {
-	return &Client{}
+func New() *request.Request {
+	return request.New()
 }

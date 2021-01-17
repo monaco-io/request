@@ -58,14 +58,14 @@ func (b BodyJSON) Apply(ctx *context.Context) {
 		buf.Write(b.Data.([]byte))
 	default:
 		if err := json.NewEncoder(buf).Encode(b.Data); err != nil {
-			fmt.Println(err)
+			ctx.SetError(fmt.Errorf("unknown json encoded type: %T", b.Data))
 			return
 		}
 	}
 
 	ctx.Request.Body = ioutil.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	setContentType(ctx, JSON)
+	ctx.SetContentType(context.JSON)
 }
 
 // Valid json body valid?
@@ -92,14 +92,14 @@ func (b BodyXML) Apply(ctx *context.Context) {
 		buf.Write(b.Data.([]byte))
 	default:
 		if err := xml.NewEncoder(buf).Encode(b.Data); err != nil {
-			ctx.SetError(fmt.Errorf("unknown json encoded type: %T", b.Data))
+			ctx.SetError(fmt.Errorf("unknown xml encoded type: %T", b.Data))
 			return
 		}
 	}
 
 	ctx.Request.Body = ioutil.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	setContentType(ctx, XML)
+	ctx.SetContentType(context.XML)
 }
 
 // Valid xml body valid?
@@ -174,7 +174,7 @@ func (b BodyURLEncodedForm) Apply(ctx *context.Context) {
 
 	ctx.Request.Body = ioutil.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	setContentType(ctx, URLEncodedForm)
+	ctx.SetContentType(context.URLEncodedForm)
 }
 
 // Valid application/x-www-form-urlencoded valid?

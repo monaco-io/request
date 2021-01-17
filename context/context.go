@@ -6,10 +6,11 @@ import (
 
 // Context  HTTP transactions
 type Context struct {
-	err      error
 	Client   *http.Client   `json:"client,omitempty"`
 	Request  *http.Request  `json:"request,omitempty"`
 	Response *http.Response `json:"response,omitempty"`
+
+	err error
 }
 
 // New creates an empty Context
