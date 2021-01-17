@@ -26,6 +26,7 @@ func (p Proxy) Apply(ctx *context.Context) {
 		proxy, _ := url.Parse(p.URL)
 		transport.Proxy = http.ProxyURL(proxy)
 	}
+
 	if p.Servers != nil {
 		// Define the proxy function to be used during the transport
 		transport.Proxy = func(req *http.Request) (*url.URL, error) {

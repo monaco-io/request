@@ -23,9 +23,9 @@ func (c *Client) Send() *response.Sugar {
 		request.BasicAuth{Username: c.BasicAuth.Username, Password: c.BasicAuth.Password},
 		request.Timeouts{Request: c.Timeout, TLS: c.TLSTimeout, Dial: c.DialTimeout},
 		request.Proxy{Servers: c.ProxyServers, URL: c.ProxyURL},
-		request.BodyJSON{Data: c.BodyJSON},
-		request.BodyString{Data: c.BodyString},
-		request.BodyXML{Data: c.BodyXML},
+		request.BodyJSON{Data: c.JSON},
+		request.BodyString{Data: c.String},
+		request.BodyXML{Data: c.XML},
 		request.TLSConfig{Config: c.TLSConfig},
 		request.Transport{RoundTripper: c.Transport},
 	}

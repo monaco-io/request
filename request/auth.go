@@ -48,7 +48,6 @@ type CustomerAuth struct {
 
 // Apply customer Authorization on header
 func (c CustomerAuth) Apply(ctx *context.Context) {
-
 	ctx.Request.Header.Set("Authorization", c.Data)
 }
 

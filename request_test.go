@@ -13,9 +13,9 @@ func TestClient_Send(t *testing.T) {
 		Method       string
 		Header       map[string]string
 		Query        map[string]string
-		BodyJSON     interface{}
-		BodyXML      interface{}
-		BodyString   string
+		JSON         interface{}
+		XML          interface{}
+		String       string
 		BasicAuth    BasicAuth
 		CustomerAuth string
 		Bearer       string
@@ -36,11 +36,11 @@ func TestClient_Send(t *testing.T) {
 	}{
 		{
 			fields: fields{
-				URL:         "http://httpbin.org",
+				URL:         "http://httpbin.org/post",
 				Method:      "POST",
 				Header:      map[string]string{"google": "google"},
 				Query:       map[string]string{"google": "google"},
-				BodyJSON:    map[string]string{"google": "google"},
+				JSON:        map[string]string{"google": "google"},
 				BasicAuth:   BasicAuth{Username: "google", Password: "google"},
 				Timeout:     time.Second * 10,
 				TLSTimeout:  time.Second * 10,
@@ -59,9 +59,9 @@ func TestClient_Send(t *testing.T) {
 				Method:       tt.fields.Method,
 				Header:       tt.fields.Header,
 				Query:        tt.fields.Query,
-				BodyJSON:     tt.fields.BodyJSON,
-				BodyXML:      tt.fields.BodyXML,
-				BodyString:   tt.fields.BodyString,
+				JSON:         tt.fields.JSON,
+				XML:          tt.fields.XML,
+				String:       tt.fields.String,
 				BasicAuth:    tt.fields.BasicAuth,
 				CustomerAuth: tt.fields.CustomerAuth,
 				Bearer:       tt.fields.Bearer,

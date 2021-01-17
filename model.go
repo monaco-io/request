@@ -21,25 +21,65 @@ import (
      token          = 1*<any CHAR except CTLs or separators>
 */
 type Client struct {
-	URL          string
-	Method       string
-	Header       map[string]string
-	Query        map[string]string
-	BodyJSON     interface{}
-	BodyXML      interface{}
-	BodyString   string
-	BasicAuth    BasicAuth
+	// URL http request url like: https://www.google.com
+	URL string
+
+	// Method http method GET/POST/POST/DELETE ...
+	Method string
+
+	// Header http header
+	Header map[string]string
+
+	// Query params on http url
+	Query map[string]string
+
+	// JSON body as json string/bytes/struct
+	JSON interface{}
+
+	// XML body as xml string/bytes/struct
+	XML interface{}
+
+	// XML body as string
+	String string
+
+	// WWWForm TODO
+	WWWForm interface{}
+
+	// BasicAuth http basic auth with username and password
+	BasicAuth BasicAuth
+
+	// CustomerAuth add Authorization xxx to header
 	CustomerAuth string
-	Bearer       string
-	Timeout      time.Duration
-	TLSTimeout   time.Duration
-	DialTimeout  time.Duration
-	ProxyURL     string
+
+	// CustomerAuth add Authorization bearer xxx to header
+	Bearer string
+
+	// Timeout http request timeout
+	Timeout time.Duration
+
+	// TLSTimeout tls timeout
+	TLSTimeout time.Duration
+
+	// DialTimeout dial timeout
+	DialTimeout time.Duration
+
+	// ProxyURL proxy url
+	ProxyURL string
+
+	// Define the proxy function to be used during the transport
 	ProxyServers map[string]string
-	Cookies      []*http.Cookie
-	CookiesMap   map[string]string
-	TLSConfig    *tls.Config
-	Transport    *http.Transport
+
+	// Cookies original http cookies
+	Cookies []*http.Cookie
+
+	// CookiesMap add cookies as map
+	CookiesMap map[string]string
+
+	// TLSConfig tls config on transport
+	TLSConfig *tls.Config
+
+	// Transport http transport
+	Transport *http.Transport
 }
 
 // BasicAuth Add Username:Password as Basic Auth
