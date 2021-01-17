@@ -47,8 +47,6 @@ go get github.com/monaco-io/request
 package main
 
 import (
-    "log"
-
     "github.com/monaco-io/request"
 )
 
@@ -67,14 +65,35 @@ func main() {
     ...
 ```
 
+### POST with empty request
+
+```go
+package main
+
+import (
+    "github.com/monaco-io/request"
+)
+
+func main() {
+    var data interface{}
+
+    resp := request.
+        New().
+        POST("http://httpbin.org/post").
+        AddHeader(map[string]string{"Google": "google"}).
+        AddBasicAuth("google", "google").
+        AddURLEncodedForm(map[string]string{"data": "google"}).
+        Send().
+        Scan(&data)
+    ...
+```
+
 ### Authorization
 
 ```go
 package main
 
 import (
-    "log"
-
     "github.com/monaco-io/request"
 )
 
@@ -96,8 +115,6 @@ func main() {
 package main
 
 import (
-    "log"
-    "time"
     "github.com/monaco-io/request"
 )
 
@@ -116,8 +133,6 @@ func main() {
 package main
 
 import (
-    "log"
-
     "github.com/monaco-io/request"
 )
 
@@ -137,8 +152,6 @@ func main() {
 package main
 
 import (
-    "log"
-    "crypto/tls"
 
     "github.com/monaco-io/request"
 )
