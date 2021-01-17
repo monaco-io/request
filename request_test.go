@@ -37,7 +37,7 @@ func TestClient_Send(t *testing.T) {
 		{
 			fields: fields{
 				URL:         "http://httpbin.org/post",
-				Method:      "POST",
+				Method:      POST,
 				Header:      map[string]string{"google": "google"},
 				Query:       map[string]string{"google": "google"},
 				JSON:        map[string]string{"google": "google"},
@@ -83,19 +83,17 @@ func TestClient_Send(t *testing.T) {
 }
 
 func TestClient_Send_Form(t *testing.T) {
-	type S struct {
-		Data        string `json:"data"`
+	var result struct {
+		Data        string `json:"google"`
 		ContentType string `json:"contentType"`
 	}
 
-	var result S
 	resp := (&Client{
-		// URL:         "http://httpbin.org/post",
-		URL:            "http://localhost:8080/ping",
-		Method:         "POST",
+		URL:            "http://httpbin.org/post",
+		Method:         POST,
 		Header:         map[string]string{"google": "google"},
 		Query:          map[string]string{"google": "google"},
-		URLEncodedForm: map[string]string{"data": "ddd"},
+		URLEncodedForm: map[string]string{"google": "google"},
 		BasicAuth:      BasicAuth{Username: "google", Password: "google"},
 		Timeout:        time.Second * 5,
 		TLSTimeout:     time.Second * 5,
@@ -108,6 +106,4 @@ func TestClient_Send_Form(t *testing.T) {
 	if !resp.OK() {
 		t.Error(resp.Error())
 	}
-	// t.Log(resp.String())
-	t.Log(result)
 }
