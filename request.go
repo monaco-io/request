@@ -26,6 +26,9 @@ func (c *Client) Send() *response.Sugar {
 		request.BodyJSON{Data: c.JSON},
 		request.BodyString{Data: c.String},
 		request.BodyXML{Data: c.XML},
+		request.BodyYAML{Data: c.YAML},
+		request.BodyForm{Fields: c.FormFields},
+		request.BodyURLEncodedForm{Data: c.URLEncodedForm},
 		request.TLSConfig{Config: c.TLSConfig},
 		request.Transport{RoundTripper: c.Transport},
 	}
@@ -37,4 +40,10 @@ func (c *Client) Send() *response.Sugar {
 	}
 
 	return response.New(ctx).Do()
+}
+
+// New a empty request
+func New() *response.Sugar {
+	ctx := context.New()
+	return response.New(ctx)
 }

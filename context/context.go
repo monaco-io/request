@@ -6,6 +6,7 @@ import (
 
 // Context  HTTP transactions
 type Context struct {
+	err      error
 	Client   *http.Client   `json:"client,omitempty"`
 	Request  *http.Request  `json:"request,omitempty"`
 	Response *http.Response `json:"response,omitempty"`
@@ -17,6 +18,12 @@ func New() *Context {
 		Request: newRequest(),
 		Client:  &http.Client{Transport: http.DefaultTransport},
 	}
+}
+
+// Do get original http client
+func (c *Context) Do() (err error) {
+	c.Response, err = c.Client.Do(c.Request)
+	return
 }
 
 // GetClient get original http client

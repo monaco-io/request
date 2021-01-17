@@ -39,11 +39,17 @@ type Client struct {
 	// XML body as xml string/bytes/struct
 	XML interface{}
 
+	// YAML body as yaml string/bytes/struct
+	YAML interface{}
+
 	// XML body as string
 	String string
 
-	// WWWForm TODO
-	WWWForm interface{}
+	// URLEncodedForm string/bytes/map[string][]string
+	URLEncodedForm interface{}
+
+	// FormFields TODO
+	FormFields map[string]string
 
 	// BasicAuth http basic auth with username and password
 	BasicAuth BasicAuth
@@ -116,3 +122,9 @@ const (
 	// PATCH http patch
 	PATCH = "PATCH"
 )
+
+// A alias of []interface{}
+type A []interface{}
+
+// H alias of map[string]interface{}
+type H map[string]interface{}

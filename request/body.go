@@ -9,10 +9,12 @@ import (
 	"io"
 	"io/ioutil"
 	"mime/multipart"
+	"net/url"
 	"strconv"
 	"strings"
 
 	"github.com/monaco-io/request/context"
+	"gopkg.in/yaml.v2"
 )
 
 // BodyString body of type string
@@ -63,7 +65,7 @@ func (b BodyJSON) Apply(ctx *context.Context) {
 
 	ctx.Request.Body = ioutil.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	ctx.Request.Header.Set("Content-Type", "application/json")
+	setContentType(ctx, JSON)
 }
 
 // Valid json body valid?
@@ -90,14 +92,14 @@ func (b BodyXML) Apply(ctx *context.Context) {
 		buf.Write(b.Data.([]byte))
 	default:
 		if err := xml.NewEncoder(buf).Encode(b.Data); err != nil {
-			fmt.Println(err)
+			ctx.SetError(fmt.Errorf("unknown json encoded type: %T", b.Data))
 			return
 		}
 	}
 
 	ctx.Request.Body = ioutil.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	ctx.Request.Header.Set("Content-Type", "application/xml")
+	setContentType(ctx, XML)
 }
 
 // Valid xml body valid?
@@ -108,14 +110,79 @@ func (b BodyXML) Valid() bool {
 	return true
 }
 
-// BodyURLEncoded ...
-type BodyURLEncoded struct {
+// BodyYAML body of type yaml
+type BodyYAML struct {
 	Data interface{}
 }
 
-// Apply ...TODO
-func (b BodyURLEncoded) Apply(ctx *context.Context) {
-	// ctx.Request.PostForm
+// Apply yaml body
+func (b BodyYAML) Apply(ctx *context.Context) {
+	buf := &bytes.Buffer{}
+
+	switch b.Data.(type) {
+	case string:
+		buf.WriteString(b.Data.(string))
+	case []byte:
+		buf.Write(b.Data.([]byte))
+	default:
+		if err := yaml.NewEncoder(buf).Encode(b.Data); err != nil {
+			ctx.SetError(fmt.Errorf("unknown yaml encoded type: %T", b.Data))
+			return
+		}
+	}
+
+	ctx.Request.Body = ioutil.NopCloser(buf)
+	ctx.Request.ContentLength = int64(buf.Len())
+}
+
+// Valid json body valid?
+func (b BodyYAML) Valid() bool {
+	if b.Data == nil {
+		return false
+	}
+	return true
+}
+
+// BodyURLEncodedForm application/x-www-form-urlencoded
+type BodyURLEncodedForm struct {
+	Data interface{}
+}
+
+// Apply application/x-www-form-urlencoded
+func (b BodyURLEncodedForm) Apply(ctx *context.Context) {
+	buf := &bytes.Buffer{}
+
+	switch b.Data.(type) {
+	case string:
+		buf.WriteString(b.Data.(string))
+	case []byte:
+		buf.Write(b.Data.([]byte))
+	case map[string]string:
+		data := make(url.Values)
+		for k, v := range b.Data.(map[string]string) {
+			data.Set(k, v)
+		}
+		buf.WriteString(data.Encode())
+	case map[string][]string:
+		buf.WriteString(url.Values(b.Data.(map[string][]string)).Encode())
+	case url.Values:
+		buf.WriteString(b.Data.(url.Values).Encode())
+	default:
+		ctx.SetError(fmt.Errorf("unknown urlencoded type: %T", b.Data))
+		return
+	}
+
+	ctx.Request.Body = ioutil.NopCloser(buf)
+	ctx.Request.ContentLength = int64(buf.Len())
+	setContentType(ctx, URLEncodedForm)
+}
+
+// Valid application/x-www-form-urlencoded valid?
+func (b BodyURLEncodedForm) Valid() bool {
+	if b.Data == nil {
+		return false
+	}
+	return true
 }
 
 // FormFile represents the file form field data.
@@ -124,14 +191,14 @@ type FormFile struct {
 	Reader io.Reader
 }
 
-// FormData represents the supported form fields by file and string data.
-type FormData struct {
+// BodyForm represents the supported form fields by file and string data.
+type BodyForm struct {
 	Fields map[string]string
 	Files  []FormFile
 }
 
 // Apply TODO
-func (fd FormData) Apply(ctx *context.Context) {
+func (fd BodyForm) Apply(ctx *context.Context) {
 	buf := &bytes.Buffer{}
 	multipartWriter := multipart.NewWriter(buf)
 
@@ -157,7 +224,7 @@ func (fd FormData) Apply(ctx *context.Context) {
 	return
 }
 
-func writeFile(multipartWriter *multipart.Writer, fd FormData, ff FormFile, index int) error {
+func writeFile(multipartWriter *multipart.Writer, fd BodyForm, ff FormFile, index int) error {
 	if ff.Reader == nil {
 		return errors.New("github/monaco-io/request: file reader cannot be nil")
 	}
@@ -188,7 +255,7 @@ func writeFile(multipartWriter *multipart.Writer, fd FormData, ff FormFile, inde
 }
 
 // Valid form body valid?
-func (fd FormData) Valid() bool {
+func (fd BodyForm) Valid() bool {
 	if fd.Fields == nil && fd.Files == nil {
 		return false
 	}
