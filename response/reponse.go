@@ -57,7 +57,7 @@ func (s *Sugar) Do() *Sugar {
 		goto OUT
 	}
 	// send request and close on func call end
-	if err := s.ctx.Do(); err != nil {
+	if err := s.ctx.TraceDo(); err != nil {
 		s.ctx.SetError(err)
 		goto OUT
 	}
@@ -208,4 +208,9 @@ func (s *Sugar) ScanYAML(userStruct interface{}) *Sugar {
 	}
 
 	return s
+}
+
+// TimeTrace ...
+func (s *Sugar) TimeTrace() context.Time {
+	return s.ctx.TimeTrace
 }

@@ -10,7 +10,8 @@ type Context struct {
 	Request  *http.Request  `json:"request,omitempty"`
 	Response *http.Response `json:"response,omitempty"`
 
-	err error
+	TimeTrace Time
+	err       error
 }
 
 // New creates an empty Context
@@ -21,10 +22,9 @@ func New() *Context {
 	}
 }
 
-// Do get original http client
-func (c *Context) Do() (err error) {
-	c.Response, err = c.Client.Do(c.Request)
-	return
+// GetTimeTrace set http debug mode
+func (c *Context) GetTimeTrace() Time {
+	return c.TimeTrace
 }
 
 // GetClient get original http client

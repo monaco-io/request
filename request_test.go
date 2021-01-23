@@ -2,6 +2,7 @@ package request
 
 import (
 	"crypto/tls"
+	"fmt"
 	"net/http"
 	"testing"
 	"time"
@@ -127,5 +128,28 @@ func TestRequest_Send(t *testing.T) {
 
 	if data["form"].(map[string]interface{})["data"] != "google" {
 		t.Error("form")
+	}
+}
+
+func TestContext_TraceDo(t *testing.T) {
+	var data map[string]interface{}
+	body := make(map[string]string)
+	for i := 0; i < 2000; i++ {
+		body[fmt.Sprint(i)] = fmt.Sprint(i)
+	}
+	resp := New().
+		POST("http://httpbin.org/post").
+		AddHeader(map[string]string{"Google": "google"}).
+		AddBasicAuth("google", "google").
+		AddJSON(body).
+		Send().
+		Scan(&data)
+
+	if !resp.OK() {
+		t.Error(resp.Error())
+	}
+
+	if resp.TimeTrace().Duration == 0 {
+		t.Fail()
 	}
 }
