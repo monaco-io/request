@@ -172,3 +172,83 @@ func TestContext_TraceDo(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestJSONBody(t *testing.T) {
+	type fields struct {
+		URL          string
+		Method       string
+		Header       map[string]string
+		SortedHeader [][2]string
+		Query        map[string]string
+		JSON         interface{}
+		XML          interface{}
+		String       string
+		BasicAuth    BasicAuth
+		CustomerAuth string
+		Bearer       string
+		Timeout      time.Duration
+		TLSTimeout   time.Duration
+		DialTimeout  time.Duration
+		ProxyURL     string
+		ProxyServers map[string]string
+		Cookies      []*http.Cookie
+		CookiesMap   map[string]string
+		TLSConfig    *tls.Config
+		Transport    *http.Transport
+	}
+	tests := []struct {
+		name      string
+		fields    fields
+		wantError bool
+	}{
+		{
+			fields: fields{
+				URL:       "http://httpbin.org/post",
+				Method:    POST,
+				JSON:      map[string]interface{}{"A": "A", "B": 001},
+				BasicAuth: BasicAuth{Username: "google", Password: "google"},
+			},
+		},
+		{
+			name: "SortedHeader",
+			fields: fields{
+				URL:    "http://httpbin.org/post",
+				Method: POST,
+				JSON: struct {
+					A string
+					B int
+				}{A: "A", B: 001},
+				BasicAuth: BasicAuth{Username: "google", Password: "google"},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Client{
+				URL:          tt.fields.URL,
+				Method:       tt.fields.Method,
+				Header:       tt.fields.Header,
+				SortedHeader: tt.fields.SortedHeader,
+				Query:        tt.fields.Query,
+				JSON:         tt.fields.JSON,
+				XML:          tt.fields.XML,
+				String:       tt.fields.String,
+				BasicAuth:    tt.fields.BasicAuth,
+				CustomerAuth: tt.fields.CustomerAuth,
+				Bearer:       tt.fields.Bearer,
+				Timeout:      tt.fields.Timeout,
+				TLSTimeout:   tt.fields.TLSTimeout,
+				DialTimeout:  tt.fields.DialTimeout,
+				ProxyURL:     tt.fields.ProxyURL,
+				ProxyServers: tt.fields.ProxyServers,
+				Cookies:      tt.fields.Cookies,
+				CookiesMap:   tt.fields.CookiesMap,
+				TLSConfig:    tt.fields.TLSConfig,
+				Transport:    tt.fields.Transport,
+			}
+			if got := c.Send().Error(); got == nil == tt.wantError {
+				t.Errorf("Client.Send() = %v, want %v", got, tt.wantError)
+			}
+		})
+	}
+}

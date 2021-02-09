@@ -3,57 +3,30 @@
 //  - Intercept request and response
 //  - Transform request and response data
 //
-// GET
+// package main
 //
-//     client := request.Client{
-//         URL:    "https://google.com",
-//         Method: "GET",
-//         Query: map[string]string{"hello": "world"},
-//     }
-//     resp := client.Send()
+// import (
+//     "github.com/monaco-io/request"
+// )
 //
-// POST
+// func main() {
+//     var body = struct {
+//          A string
+//          B int
+//         }{A: "A", B: 001}
+//     var result interface{}
 //
 //     client := request.Client{
 //         URL:    "https://google.com",
 //         Method: "POST",
 //         Query: map[string]string{"hello": "world"},
-//         JSON:   []byte(`{"hello": "world"}`),
+//         JSON:   body,
 //     }
-//     resp := client.Send()
-//
-// Content-Type
-//
-//     client := request.Client{
-//         URL:          "https://google.com",
-//         Method:       "POST",
-//         ContentType: request.ApplicationXWwwFormURLEncoded, // default is "application/json"
-//     }
-//     resp := client.Send()
-//
-// Authorization
-//
-//     client := request.Client{
-//         URL:       "https://google.com",
-//         Method:    "POST",
-//         BasicAuth:      request.BasicAuth{
-//             Username:"user_xxx",
-//             Password:"pwd_xxx",
-//         }, // xxx:xxx
+//     if err := client.Send().Scan(&result).Error(); err != nil{
+//         // handle error
 //     }
 //
-//     resp := client.Send()
-//
-// Cookies
-//     client := request.Client{
-//         URL:       "https://google.com",
-//         Cookies:[]*http.Cookie{
-//              {
-//               Name:  "cookie_name",
-//               Value: "cookie_value",
-//              },
-//         },
-//     }
-//
-//     resp := client.Send()
+//     // str := client.Send().String()
+//     // bytes := client.Send().Bytes()
+// ```
 package request

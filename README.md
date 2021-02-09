@@ -51,18 +51,24 @@ import (
 )
 
 func main() {
+    var body = struct {
+         A string
+         B int
+        }{A: "A", B: 001}
+    var result interface{}
+
     client := request.Client{
         URL:    "https://google.com",
         Method: "POST",
         Query: map[string]string{"hello": "world"},
-        JSON:   []byte(`{"hello": "world"}`),
+        JSON:   body,
     }
-    var result interface{}
-    resp := client.Send()
-    err := resp.Scan(&result).Error()
-    str := resp.String()
-    bytes := resp.Bytes()
-    ...
+    if err := client.Send().Scan(&result).Error(); err != nil{
+        // handle error
+    }
+
+    // str := client.Send().String()
+    // bytes := client.Send().Bytes()
 ```
 
 ### POST with empty request
@@ -75,7 +81,7 @@ import (
 )
 
 func main() {
-    var data interface{}
+    var response interface{}
 
     resp := request.
         New().
@@ -84,7 +90,7 @@ func main() {
         AddBasicAuth("google", "google").
         AddURLEncodedForm(map[string]string{"data": "google"}).
         Send().
-        Scan(&data)
+        Scan(&response)
     ...
 ```
 
