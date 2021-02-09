@@ -23,11 +23,11 @@ const (
 
 // ContentTypes http content type map
 var ContentTypes = map[contentType]string{
-	HTML:           "text/html",
-	JSON:           "application/json",
-	XML:            "application/xml",
-	Text:           "text/plain",
-	URLEncodedForm: "application/x-www-form-urlencoded",
+	HTML:           "text/html; charset=utf-8",
+	JSON:           "application/json; charset=utf-8",
+	XML:            "application/xml; charset=utf-8",
+	Text:           "text/plain; charset=utf-8",
+	URLEncodedForm: "application/x-www-form-urlencoded; charset=utf-8",
 }
 
 // SetContentType set content type on header of http request
