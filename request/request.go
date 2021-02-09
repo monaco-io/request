@@ -101,6 +101,12 @@ func (r *Request) AddHeader(data map[string]string) *Request {
 		use(Header{Data: data})
 }
 
+// AddSortedHeader ...
+func (r *Request) AddSortedHeader(data [][2]string) *Request {
+	return r.
+		use(SortedHeader{Data: data})
+}
+
 // AddBasicAuth ...
 func (r *Request) AddBasicAuth(username, password string) *Request {
 	return r.

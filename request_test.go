@@ -13,6 +13,7 @@ func TestClient_Send(t *testing.T) {
 		URL          string
 		Method       string
 		Header       map[string]string
+		SortedHeader [][2]string
 		Query        map[string]string
 		JSON         interface{}
 		XML          interface{}
@@ -51,6 +52,23 @@ func TestClient_Send(t *testing.T) {
 				Transport:   &http.Transport{},
 			},
 		},
+		{
+			name: "SortedHeader",
+			fields: fields{
+				URL:          "http://httpbin.org/post",
+				Method:       POST,
+				SortedHeader: [][2]string{{"A", "A"}, {"B", "B"}, {"C", "C"}},
+				Query:        map[string]string{"google": "google"},
+				JSON:         map[string]string{"google": "google"},
+				BasicAuth:    BasicAuth{Username: "google", Password: "google"},
+				Timeout:      time.Second * 10,
+				TLSTimeout:   time.Second * 10,
+				DialTimeout:  time.Second * 10,
+				CookiesMap:   map[string]string{"google": "google"},
+				TLSConfig:    &tls.Config{},
+				Transport:    &http.Transport{},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -58,6 +76,7 @@ func TestClient_Send(t *testing.T) {
 				URL:          tt.fields.URL,
 				Method:       tt.fields.Method,
 				Header:       tt.fields.Header,
+				SortedHeader: tt.fields.SortedHeader,
 				Query:        tt.fields.Query,
 				JSON:         tt.fields.JSON,
 				XML:          tt.fields.XML,

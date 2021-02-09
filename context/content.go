@@ -1,6 +1,8 @@
 package context
 
-import "strings"
+import (
+	"strings"
+)
 
 type contentType int
 
@@ -37,5 +39,6 @@ func (ctx *Context) SetContentType(ct contentType) {
 
 // ContentTypeValid ...
 func ContentTypeValid(current string, ct contentType) bool {
-	return strings.HasPrefix(current, ContentTypes[ct])
+	prefixIndex := strings.Index(ContentTypes[ct], ";")
+	return strings.HasPrefix(current, ContentTypes[ct][:prefixIndex])
 }

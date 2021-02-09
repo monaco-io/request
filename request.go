@@ -16,6 +16,7 @@ func (c *Client) Send() *response.Sugar {
 		request.Query{Data: c.Query},
 		request.Method{Data: c.Method},
 		request.Header{Data: c.Header},
+		request.SortedHeader{Data: c.SortedHeader},
 		request.UserAgent{Version: Version},
 		request.Cookies{Data: c.Cookies, Map: c.CookiesMap},
 		request.BearerAuth{Data: c.Bearer},

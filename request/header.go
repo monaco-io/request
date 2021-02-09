@@ -24,6 +24,26 @@ func (h Header) Valid() bool {
 	return true
 }
 
+// SortedHeader header slice, example [][2]string{{k1,v1},{k2,v2}}
+type SortedHeader struct {
+	Data [][2]string
+}
+
+// Apply apply http headers
+func (h SortedHeader) Apply(ctx *context.Context) {
+	for i := range h.Data {
+		ctx.Request.Header.Set(h.Data[i][0], h.Data[i][1])
+	}
+}
+
+// Valid user agent in header valid?
+func (h SortedHeader) Valid() bool {
+	if h.Data == nil {
+		return false
+	}
+	return true
+}
+
 // UserAgent user agent in header
 type UserAgent struct {
 	Version string

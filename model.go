@@ -30,6 +30,9 @@ type Client struct {
 	// Header http header
 	Header map[string]string
 
+	// SortedHeader http sorted header, example: [][2]string{{"h1": "v1"}, {"h2": "v2"}}
+	SortedHeader [][2]string
+
 	// Query params on http url
 	Query map[string]string
 
