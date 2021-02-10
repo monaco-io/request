@@ -1,4 +1,4 @@
 binary = request
 
 install:
-	go build -o ~/go/$(binary) cli/main.go
+	go build -o ~/go/bin/$(binary) cli/main.go
