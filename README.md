@@ -69,8 +69,8 @@ func main() {
         log.Println(resp.Error())
     }
 
-    // str := client.Send().String()
-    // bytes := client.Send().Bytes()
+    // str := resp.String()
+    // bytes := resp.Bytes()
 ```
 
 ### POST with empty request
