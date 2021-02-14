@@ -63,8 +63,10 @@ func main() {
         Query: map[string]string{"hello": "world"},
         JSON:   body,
     }
-    if err := client.Send().Scan(&result).Error(); err != nil{
+    resp := client.Send().Scan(&result)
+    if !resp.OK(){
         // handle error
+        log.Println(resp.Error())
     }
 
     // str := client.Send().String()
