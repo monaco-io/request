@@ -13,11 +13,11 @@ func (c *Client) Send() *response.Sugar {
 
 	plugins := []request.Plugin{
 		request.URL{Data: c.URL},
+		request.UserAgent{Version: Version},
 		request.Query{Data: c.Query},
 		request.Method{Data: c.Method},
 		request.Header{Data: c.Header},
 		request.SortedHeader{Data: c.SortedHeader},
-		request.UserAgent{Version: Version},
 		request.Cookies{Data: c.Cookies, Map: c.CookiesMap},
 		request.BearerAuth{Data: c.Bearer},
 		request.CustomerAuth{},
