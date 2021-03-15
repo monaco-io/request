@@ -133,9 +133,9 @@ func main() {
     c := request.Client{
         URL:       "https://google.com",
         Method:    "POST",
-        MultipartForm: MultipartForm{
-            Fields: map[string]string{"a": "1"},
-			Files:  []string{"doc.txt"},
+        BasicAuth: request.BasicAuth{
+            Username: "google",
+            Password: "google",
         },
     }
     resp := c.Send()
