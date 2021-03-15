@@ -20,7 +20,9 @@ func TestNew(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := New(); !reflect.DeepEqual(got, tt.want) {
+			if got := New(); got == nil ||
+				!reflect.DeepEqual(got.Client, tt.want.Client) ||
+				!reflect.DeepEqual(got.Request, tt.want.Request) {
 				t.Errorf("New() = %v, want %v", got, tt.want)
 			}
 		})
