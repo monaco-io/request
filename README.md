@@ -134,9 +134,15 @@ func main() {
         URL:       "https://google.com",
         Method:    "POST",
 <<<<<<< HEAD
+<<<<<<< HEAD
         BasicAuth: request.BasicAuth{
             Username: "google",
             Password: "google",
+=======
+        MultipartForm: MultipartForm{
+            Fields: map[string]string{"a": "1"},
+			Files:  []string{"doc.txt"},
+>>>>>>> feat: mutipart form data
 =======
         MultipartForm: MultipartForm{
             Fields: map[string]string{"a": "1"},
