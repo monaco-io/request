@@ -7,11 +7,12 @@
 [![Release](https://img.shields.io/github/release/monaco-io/request.svg?style=flat-square)](https://github.com/monaco-io/request/releases)
 [![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/monaco-io/request)](https://www.tickgit.com/browse?repo=github.com/monaco-io/request)
 [![License](https://img.shields.io/github/license/monaco-io/request?style=plastic)](https://github.com/monaco-io/request/blob/master/LICENSE)
+
 <!-- [![Sourcegraph](https://sourcegraph.com/github.com/monaco-io/request/-/badge.svg)](https://sourcegraph.com/github.com/monaco-io/request?badge) -->
 <!-- [![Open Source Helpers](https://www.codetriage.com/monaco-io/request/badges/users.svg)](https://www.codetriage.com/monaco-io/request) -->
 <!-- [![Join the chat at https://gitter.im/monaco-io/request](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/monaco-io/request?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) -->
 
-HTTP client for golang, Inspired by [Javascript-axios](https://github.com/axios/axios) [Python-request](https://github.com/psf/requests).
+HTTP Client for golang, Inspired by [Javascript-axios](https://github.com/axios/axios) [Python-request](https://github.com/psf/requests).
 If you have experience about axios or requests, you will love it.
 No 3rd dependency.
 
@@ -54,16 +55,16 @@ func main() {
     var body = struct {
          A string
          B int
-        }{A: "A", B: 001}
+        }{A: "A", B: 1}
     var result interface{}
 
-    client := request.Client{
+    c := request.Client{
         URL:    "https://google.com",
         Method: "POST",
         Query: map[string]string{"hello": "world"},
         JSON:   body,
     }
-    resp := client.Send().Scan(&result)
+    resp := c.Send().Scan(&result)
     if !resp.OK(){
         // handle error
         log.Println(resp.Error())
@@ -73,7 +74,27 @@ func main() {
     // bytes := resp.Bytes()
 ```
 
-### POST with empty request
+### POST with local files
+
+```go
+package main
+
+import (
+    "github.com/monaco-io/request"
+)
+
+func main() {
+    c := request.Client{
+        URL:    "https://google.com",
+        Method: "POST",
+        Query: map[string]string{"hello": "world"},
+        JSON:   body,
+    }
+    resp := c.Send().Scan(&result)
+    ...
+```
+
+### POST step by step
 
 ```go
 package main
@@ -106,14 +127,15 @@ import (
 )
 
 func main() {
-    client := request.Client{
+    c := request.Client{
         URL:       "https://google.com",
         Method:    "POST",
-        BasicAuth: request.BasicAuth{
-            Username:"user_xxx",
-            Password:"pwd_xxx",
+        MultipartForm: MultipartForm{
+            Fields: map[string]string{"a": "1"},
+			Files:  []string{"doc.txt"},
         },
     }
+    resp := c.Send()
 }
 ```
 
@@ -127,7 +149,7 @@ import (
 )
 
 func main() {
-    client := request.Client{
+    c := request.Client{
         URL:       "https://google.com",
         Method:    "POST",
         Timeout:   time.Second*10,
@@ -145,7 +167,7 @@ import (
 )
 
 func main() {
-    client := request.Client{
+    c := request.Client{
         URL:       "https://google.com",
         CookiesMap: map[string]string{
             "cookie_name": "cookie_value",
@@ -165,7 +187,7 @@ import (
 )
 
 func main() {
-    client := request.Client{
+    c := request.Client{
         URL:       "https://google.com",
         TLSConfig: &tls.Config{InsecureSkipVerify: true},
     }

@@ -53,7 +53,7 @@ func (s *Sugar) Close() *Sugar {
 
 // Do do http request with client
 func (s *Sugar) Do() *Sugar {
-	if s.done {
+	if s.done || s.ctx.HasError() {
 		goto OUT
 	}
 	// send request and close on func call end

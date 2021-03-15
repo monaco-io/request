@@ -30,7 +30,7 @@ type Client struct {
 	// Header http header
 	Header map[string]string
 
-	// SortedHeader http sorted header, example: [][2]string{{"h1": "v1"}, {"h2": "v2"}}
+	// SortedHeader http sorted header, example: [][2]string{{"h1", "v1"}, {"h2", "v2"}}
 	SortedHeader [][2]string
 
 	// Query params on http url
@@ -51,8 +51,8 @@ type Client struct {
 	// URLEncodedForm string/bytes/map[string][]string
 	URLEncodedForm interface{}
 
-	// FormFields TODO
-	FormFields map[string]string
+	// MultipartForm key value pairs
+	MultipartForm MultipartForm
 
 	// BasicAuth http basic auth with username and password
 	BasicAuth BasicAuth
@@ -131,3 +131,9 @@ type A []interface{}
 
 // H alias of map[string]interface{}
 type H map[string]interface{}
+
+// MultipartForm Fields is key value pairs, Files is a list of local files
+type MultipartForm struct {
+	Fields map[string]string
+	Files  []string
+}

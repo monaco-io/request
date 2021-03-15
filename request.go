@@ -28,7 +28,7 @@ func (c *Client) Send() *response.Sugar {
 		request.BodyString{Data: c.String},
 		request.BodyXML{Data: c.XML},
 		request.BodyYAML{Data: c.YAML},
-		request.BodyForm{Fields: c.FormFields},
+		request.BodyForm{Fields: c.MultipartForm.Fields, Files: c.MultipartForm.Files},
 		request.BodyURLEncodedForm{Data: c.URLEncodedForm},
 		request.TLSConfig{Config: c.TLSConfig},
 		request.Transport{RoundTripper: c.Transport},

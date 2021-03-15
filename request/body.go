@@ -4,14 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
-	"errors"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
 	"net/url"
-	"strconv"
-	"strings"
+	"path"
 
 	"github.com/monaco-io/request/context"
 	"gopkg.in/yaml.v2"
@@ -194,17 +192,38 @@ type FormFile struct {
 // BodyForm represents the supported form fields by file and string data.
 type BodyForm struct {
 	Fields map[string]string
-	Files  []FormFile
+	Files  []string
 }
 
-// Apply TODO
+// Apply Form Data
 func (fd BodyForm) Apply(ctx *context.Context) {
-	buf := &bytes.Buffer{}
-	multipartWriter := multipart.NewWriter(buf)
+	var (
+		err error
+		buf bytes.Buffer
+	)
 
-	for index, file := range fd.Files {
-		if err := writeFile(multipartWriter, fd, file, index); err != nil {
-			return
+	multipartWriter := multipart.NewWriter(&buf)
+
+	for _, filePath := range fd.Files {
+		var (
+			w    io.Writer
+			data []byte
+		)
+
+		w, err = multipartWriter.CreateFormFile(path.Base(filePath), path.Base(filePath))
+		if err != nil {
+			err = fmt.Errorf("cread form file failed: %s", err)
+			goto ErrorHandler
+		}
+		data, err = ioutil.ReadFile(filePath)
+		if err != nil {
+			err = fmt.Errorf("read local file failed: %s", err)
+			goto ErrorHandler
+		}
+		_, err = w.Write(data)
+		if err != nil {
+			err = fmt.Errorf("write byte to writer failed: %s", err)
+			goto ErrorHandler
 		}
 	}
 
@@ -212,46 +231,19 @@ func (fd BodyForm) Apply(ctx *context.Context) {
 	for k, v := range fd.Fields {
 		multipartWriter.WriteField(k, v)
 	}
-	if err := multipartWriter.Close(); err != nil {
+	if err = multipartWriter.Close(); err != nil {
 		return
 	}
 	if buf.Len() == 0 {
 		return
 	}
 
-	ctx.Request.Body = ioutil.NopCloser(buf)
+	ctx.Request.Body = ioutil.NopCloser(&buf)
 	ctx.Request.Header.Add("Content-Type", multipartWriter.FormDataContentType())
 	return
-}
 
-func writeFile(multipartWriter *multipart.Writer, fd BodyForm, ff FormFile, index int) error {
-	if ff.Reader == nil {
-		return errors.New("github/monaco-io/request: file reader cannot be nil")
-	}
-
-	rc, ok := ff.Reader.(io.ReadCloser)
-	if !ok && ff.Reader != nil {
-		rc = ioutil.NopCloser(ff.Reader)
-	}
-
-	fileName := "file"
-	if len(fd.Files) > 1 {
-		fileName = strings.Join([]string{fileName, strconv.Itoa(index + 1)}, "")
-	}
-	if ff.Name != "" {
-		fileName = ff.Name
-	}
-
-	writer, err := multipartWriter.CreateFormFile(fileName, ff.Name)
-	if err != nil {
-		return err
-	}
-	if _, err = io.Copy(writer, rc); err != nil && err != io.EOF {
-		return err
-	}
-	rc.Close()
-
-	return nil
+ErrorHandler:
+	ctx.SetError(err)
 }
 
 // Valid form body valid?

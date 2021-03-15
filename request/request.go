@@ -167,6 +167,12 @@ func (r *Request) AddTransform(data http.RoundTripper) *Request {
 		use(Transport{RoundTripper: data})
 }
 
+// AddMultipartForm ...
+func (r *Request) AddMultipartForm(fields map[string]string, files []string) *Request {
+	return r.
+		use(BodyForm{Fields: fields, Files: files})
+}
+
 // Send ...
 func (r *Request) Send() *response.Sugar {
 	return response.New(r.ctx).Do()
