@@ -336,3 +336,7 @@ func TestFileBody(t *testing.T) {
 		})
 	}
 }
+
+func TestCURL(t *testing.T) {
+
+}

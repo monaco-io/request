@@ -9,6 +9,14 @@ import (
 // Send http request
 func (c *Client) Send() *response.Sugar {
 
+	ctx := c.initContext()
+	resp := response.New(ctx)
+
+	return resp.Do()
+}
+
+func (c *Client) initContext() *context.Context {
+
 	ctx := context.New()
 
 	plugins := []request.Plugin{
@@ -40,7 +48,7 @@ func (c *Client) Send() *response.Sugar {
 		}
 	}
 
-	return response.New(ctx).Do()
+	return ctx
 }
 
 // New a empty request
