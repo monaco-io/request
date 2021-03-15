@@ -88,14 +88,10 @@ func main() {
         URL:    "https://google.com",
         Method: "POST",
         Query: map[string]string{"hello": "world"},
-<<<<<<< HEAD
         MultipartForm: MultipartForm{
             Fields: map[string]string{"a": "1"},
 			Files:  []string{"doc.txt"},
         },
-=======
-        JSON:   body,
->>>>>>> feat: mutipart form data
     }
     resp := c.Send().Scan(&result)
     ...
