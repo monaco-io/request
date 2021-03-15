@@ -143,12 +143,6 @@ func (r *Request) AddCookiesMap(data map[string]string) *Request {
 		use(Cookies{Map: data})
 }
 
-// // AddForm ...
-// func (r *Request) AddForm(data interface{}) *Request {
-// 	return r.
-// 		use(BodyForm{Data: data})
-// }
-
 // AddURLEncodedForm ...
 func (r *Request) AddURLEncodedForm(data interface{}) *Request {
 	return r.
