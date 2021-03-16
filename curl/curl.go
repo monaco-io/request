@@ -3,7 +3,7 @@ package curl
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"sort"
 	"strings"
@@ -18,17 +18,18 @@ func GetCommand(req *http.Request) (cmd string, err error) {
 	var (
 		command []string
 		keys    []string
+		body    []byte
+		space   = " "
 	)
 
 	command = append(command, "curl", "-X", bashEscape(req.Method))
 
 	if req.Body != nil {
-		var body []byte
-		body, err = ioutil.ReadAll(req.Body)
+		body, err = io.ReadAll(req.Body)
 		if err != nil {
 			return
 		}
-		req.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+		req.Body = io.NopCloser(bytes.NewBuffer(body))
 		if len(string(body)) > 0 {
 			bodyEscaped := bashEscape(string(body))
 			command = append(command, "-d", bodyEscaped)
@@ -41,10 +42,10 @@ func GetCommand(req *http.Request) (cmd string, err error) {
 	sort.Strings(keys)
 
 	for _, k := range keys {
-		command = append(command, "-H", bashEscape(fmt.Sprintf("%s: %s", k, strings.Join(req.Header[k], " "))))
+		command = append(command, "-H", bashEscape(fmt.Sprintf("%s: %s", k, strings.Join(req.Header[k], space))))
 	}
 
 	command = append(command, bashEscape(req.URL.String()))
-	cmd = strings.Join(command, " ")
+	cmd = strings.Join(command, space)
 	return
 }

@@ -39,7 +39,7 @@ func TestClient_PrintCURL(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name: "",
+			name: "print curl",
 			fields: fields{
 				URL:    "https://www.google.com",
 				Method: "POST",
