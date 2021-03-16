@@ -152,7 +152,7 @@ func (r *Request) AddURLEncodedForm(data interface{}) *Request {
 // AddTLSConfig ...
 func (r *Request) AddTLSConfig(data *tls.Config) *Request {
 	return r.
-		use(BodyURLEncodedForm{Data: data})
+		use(TLSConfig{data})
 }
 
 // AddTransform ...
