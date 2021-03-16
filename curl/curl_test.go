@@ -2,7 +2,7 @@ package curl
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/url"
 	"testing"
@@ -14,7 +14,7 @@ func TestGetCommand(t *testing.T) {
 	form.Add("key2", "val2")
 	body := form.Encode()
 
-	req, _ := http.NewRequest(http.MethodPost, "https://www.google.com", ioutil.NopCloser(bytes.NewBufferString(body)))
+	req, _ := http.NewRequest(http.MethodPost, "https://www.google.com", io.NopCloser(bytes.NewBufferString(body)))
 	req.Header.Set("HEADER1", "HEADER_VAL1")
 
 	command, _ := GetCommand(req)
