@@ -134,8 +134,8 @@ func main() {
         URL:       "https://google.com",
         Method:    "POST",
         BasicAuth: request.BasicAuth{
-            Username:"user_xxx",
-            Password:"pwd_xxx",
+            Username: "google",
+            Password: "google",
         },
     }
     resp := c.Send()
