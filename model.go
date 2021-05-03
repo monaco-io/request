@@ -1,6 +1,7 @@
 package request
 
 import (
+	"context"
 	"crypto/tls"
 	"net/http"
 	"time"
@@ -21,6 +22,9 @@ import (
      token          = 1*<any CHAR except CTLs or separators>
 */
 type Client struct {
+	// Context go context
+	Context context.Context
+
 	// URL http request url like: https://www.google.com
 	URL string
 

@@ -1,6 +1,7 @@
 package request
 
 import (
+	originContext "context"
 	"crypto/tls"
 	"net/http"
 
@@ -21,6 +22,11 @@ func (r *Request) use(p Plugin) *Request {
 // New request struct
 func New() *Request {
 	return &Request{ctx: context.New()}
+}
+
+// NewWithContext request struct
+func NewWithContext(ctx originContext.Context) *Request {
+	return &Request{ctx: context.NewWithContext(ctx)}
 }
 
 // Error get request error

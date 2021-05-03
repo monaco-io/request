@@ -120,6 +120,54 @@ func main() {
     ...
 ```
 
+### POST with context (1/2)
+
+```go
+package main
+
+import (
+    "github.com/monaco-io/request"
+    "context"
+)
+
+func main() {
+    c := request.Client{
+        Context: context.Background(),
+        URL:       "https://google.com",
+        Method:    "POST",
+        BasicAuth: request.BasicAuth{
+            Username: "google",
+            Password: "google",
+        },
+    }
+    resp := c.Send()
+    ...
+```
+
+### POST with context (2/2)
+
+```go
+package main
+
+import (
+    "github.com/monaco-io/request"
+    "context"
+)
+
+func main() {
+    var response interface{}
+
+    resp := request.
+        NewWithContext(context.TODO()).
+        POST("http://httpbin.org/post").
+        AddHeader(map[string]string{"Google": "google"}).
+        AddBasicAuth("google", "google").
+        AddURLEncodedForm(map[string]string{"data": "google"}).
+        Send().
+        Scan(&response)
+    ...
+```
+
 ### Authorization
 
 ```go
