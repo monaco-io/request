@@ -1,12 +1,15 @@
 package request
 
 import (
-	"context"
+	originContext "context"
 	"crypto/tls"
 	"fmt"
 	"net/http"
+	"reflect"
 	"testing"
 	"time"
+
+	"github.com/monaco-io/request/request"
 )
 
 func TestClient_Send(t *testing.T) {
@@ -124,7 +127,7 @@ func TestClient_Send_With_Context(t *testing.T) {
 		CookiesMap   map[string]string
 		TLSConfig    *tls.Config
 		Transport    *http.Transport
-		Context      context.Context
+		Context      originContext.Context
 	}
 	tests := []struct {
 		name      string
@@ -133,7 +136,7 @@ func TestClient_Send_With_Context(t *testing.T) {
 	}{
 		{
 			fields: fields{
-				Context:     context.TODO(),
+				Context:     originContext.TODO(),
 				URL:         "http://httpbin.org/post",
 				Method:      POST,
 				Header:      map[string]string{"google": "google"},
@@ -149,7 +152,7 @@ func TestClient_Send_With_Context(t *testing.T) {
 		{
 			name: "SortedHeader",
 			fields: fields{
-				Context:      context.TODO(),
+				Context:      originContext.TODO(),
 				URL:          "http://httpbin.org/post",
 				Method:       POST,
 				SortedHeader: [][2]string{{"A", "A"}, {"B", "B"}, {"C", "C"}},
@@ -425,6 +428,31 @@ func TestFileBody(t *testing.T) {
 			resp := c.Send()
 			if got := resp.Error(); got == nil == tt.wantError {
 				t.Errorf("Client.Send() = %v, want %v", got, tt.wantError)
+			}
+		})
+	}
+}
+
+func TestNewWithContext(t *testing.T) {
+	type args struct {
+		ctx originContext.Context
+	}
+	tests := []struct {
+		name string
+		args args
+		want *request.Request
+	}{
+		{
+			args: args{
+				ctx: originContext.Background(),
+			},
+			want: NewWithContext(originContext.Background()),
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewWithContext(tt.args.ctx); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewWithContext() = %v, want %v", got, tt.want)
 			}
 		})
 	}
