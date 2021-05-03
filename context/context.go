@@ -1,6 +1,7 @@
 package context
 
 import (
+	originContext "context"
 	"net/http"
 )
 
@@ -18,6 +19,14 @@ type Context struct {
 func New() *Context {
 	return &Context{
 		Request: newRequest(),
+		Client:  &http.Client{Transport: http.DefaultTransport},
+	}
+}
+
+// NewWithContext creates an empty Context
+func NewWithContext(ctx originContext.Context) *Context {
+	return &Context{
+		Request: newRequestWithContext(ctx),
 		Client:  &http.Client{Transport: http.DefaultTransport},
 	}
 }
@@ -44,5 +53,10 @@ func (c *Context) GetResponse() *http.Response {
 
 func newRequest() *http.Request {
 	r, _ := http.NewRequest("", "", nil)
+	return r
+}
+
+func newRequestWithContext(ctx originContext.Context) *http.Request {
+	r, _ := http.NewRequestWithContext(ctx, "", "", nil)
 	return r
 }

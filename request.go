@@ -1,6 +1,8 @@
 package request
 
 import (
+	originContext "context"
+
 	"github.com/monaco-io/request/context"
 	"github.com/monaco-io/request/request"
 	"github.com/monaco-io/request/response"
@@ -16,8 +18,13 @@ func (c *Client) Send() *response.Sugar {
 }
 
 func (c *Client) initContext() *context.Context {
+	var ctx *context.Context
 
-	ctx := context.New()
+	if c.Context != nil {
+		ctx = context.NewWithContext(c.Context)
+	} else {
+		ctx = context.New()
+	}
 
 	plugins := []request.Plugin{
 		request.URL{Data: c.URL},
@@ -54,4 +61,9 @@ func (c *Client) initContext() *context.Context {
 // New a empty request
 func New() *request.Request {
 	return request.New()
+}
+
+// NewWithContext a empty request
+func NewWithContext(ctx originContext.Context) *request.Request {
+	return request.NewWithContext(ctx)
 }
