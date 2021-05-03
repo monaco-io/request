@@ -1,6 +1,7 @@
 package request
 
 import (
+	"crypto/tls"
 	"testing"
 )
 
@@ -37,5 +38,17 @@ func TestRequest_Form(t *testing.T) {
 
 	if resp.Error().Error() != "read local file failed: open no_exist.txt: no such file or directory" {
 		t.Error(resp.Error())
+	}
+}
+
+func TestRequest_AddTLSConfig(t *testing.T) {
+	resp := New().
+		POST("http://httpbin.org/post").
+		AddHeader(map[string]string{"Google": "google"}).
+		AddBasicAuth("google", "google").
+		AddTLSConfig(&tls.Config{InsecureSkipVerify: false}).
+		Send()
+	if !resp.OK() {
+		t.Error(resp.Error()) //unknown urlencoded type: *tls.Config
 	}
 }
