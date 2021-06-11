@@ -37,6 +37,7 @@ type result struct {
 	contentLength int64
 }
 
+// Work http worker
 type Work struct {
 	// Request is the request to be made.
 	Request *http.Request
@@ -122,6 +123,7 @@ func (b *Work) Stop() {
 	}
 }
 
+// Finish close worker
 func (b *Work) Finish() {
 	close(b.results)
 	total := now() - b.start
