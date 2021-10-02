@@ -91,6 +91,10 @@ func (s *Sugar) Response() *http.Response {
 
 // Code http status code
 func (s *Sugar) Code() int {
+	// Does Response exist?
+	if s.ctx.Response == nil {
+		return 0
+	}
 	return s.ctx.Response.StatusCode
 }
 
