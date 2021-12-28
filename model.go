@@ -49,7 +49,7 @@ type Client struct {
 	// YAML body as yaml string/bytes/struct
 	YAML interface{}
 
-	// XML body as string
+	// String body as string
 	String string
 
 	// URLEncodedForm string/bytes/map[string][]string
