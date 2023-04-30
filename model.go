@@ -70,12 +70,6 @@ type Client struct {
 	// Timeout http request timeout
 	Timeout time.Duration
 
-	// TLSTimeout tls timeout
-	TLSTimeout time.Duration
-
-	// DialTimeout dial timeout
-	DialTimeout time.Duration
-
 	// ProxyURL proxy url
 	ProxyURL string
 

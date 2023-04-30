@@ -1,4 +1,4 @@
 package request
 
 // Version of module github.com/monaco-io/request
-const Version = "v1.0.14"
+const Version = "v1.0.16"

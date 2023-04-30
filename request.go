@@ -34,10 +34,10 @@ func (c *Client) initContext() *xcontext.Context {
 		request.Header{Data: c.Header},
 		request.SortedHeader{Data: c.SortedHeader},
 		request.Cookies{Data: c.Cookies, Map: c.CookiesMap},
-		request.BearerAuth{Data: c.Bearer},
-		request.CustomerAuth{},
 		request.BasicAuth{Username: c.BasicAuth.Username, Password: c.BasicAuth.Password},
-		request.Timeouts{Request: c.Timeout, TLS: c.TLSTimeout, Dial: c.DialTimeout},
+		request.BearerAuth{Data: c.Bearer},
+		request.CustomerAuth{Data: c.CustomerAuth},
+		request.Timeout{Data: c.Timeout},
 		request.Proxy{Servers: c.ProxyServers, URL: c.ProxyURL},
 		request.BodyJSON{Data: c.JSON},
 		request.BodyString{Data: c.String},
@@ -45,8 +45,8 @@ func (c *Client) initContext() *xcontext.Context {
 		request.BodyYAML{Data: c.YAML},
 		request.BodyForm{Fields: c.MultipartForm.Fields, Files: c.MultipartForm.Files},
 		request.BodyURLEncodedForm{Data: c.URLEncodedForm},
+		request.Transport{Transport: c.Transport},
 		request.TLSConfig{Config: c.TLSConfig},
-		request.Transport{RoundTripper: c.Transport},
 	}
 
 	for _, plugin := range plugins {

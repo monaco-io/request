@@ -18,10 +18,7 @@ func (h Host) Apply(ctx *xcontext.Context) {
 
 // Valid http host name like: https://www.google.com valid?
 func (h Host) Valid() bool {
-	if h.Data == "" {
-		return false
-	}
-	return true
+	return h.Data != ""
 }
 
 // Path http url path like: /api/v1/xx
@@ -39,10 +36,7 @@ func (p Path) Apply(ctx *xcontext.Context) {
 
 // Valid http url path like: /api/v1/xx valid?
 func (p Path) Valid() bool {
-	if p.Data == "" {
-		return false
-	}
-	return true
+	return p.Data != ""
 }
 
 // Query http query params like: ?a=1&b=2
@@ -64,10 +58,7 @@ func (q Query) Apply(ctx *xcontext.Context) {
 
 // Valid http url path like: /api/v1/xx valid?
 func (q Query) Valid() bool {
-	if q.Data == nil {
-		return false
-	}
-	return true
+	return q.Data != nil
 }
 
 // URL http url (host+path+params)

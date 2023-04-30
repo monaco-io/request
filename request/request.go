@@ -162,9 +162,9 @@ func (r *Request) AddTLSConfig(data *tls.Config) *Request {
 }
 
 // AddTransform ...
-func (r *Request) AddTransform(data http.RoundTripper) *Request {
+func (r *Request) AddTransform(data *http.Transport) *Request {
 	return r.
-		use(Transport{RoundTripper: data})
+		use(Transport{Transport: data})
 }
 
 // AddMultipartForm ...

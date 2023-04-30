@@ -22,7 +22,6 @@ func (tc TLSConfig) Apply(ctx *xcontext.Context) {
 		// TODO:
 		return
 	}
-
 	// Override the http.Client transport
 	transport.TLSClientConfig = tc.Config
 	ctx.Client.Transport = transport
@@ -30,5 +29,5 @@ func (tc TLSConfig) Apply(ctx *xcontext.Context) {
 
 // Valid http timeouts of tls, dial, keepalive or all valid?
 func (tc TLSConfig) Valid() bool {
-	return true
+	return tc.Config != nil
 }
