@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 )
 
 // Proxy http proxy url or multi services
@@ -14,7 +14,7 @@ type Proxy struct {
 }
 
 // Apply http proxy url or multi services
-func (p Proxy) Apply(ctx *context.Context) {
+func (p Proxy) Apply(ctx *xcontext.Context) {
 	// Assert http.Transport to work with the instance
 	transport, ok := ctx.Client.Transport.(*http.Transport)
 	if !ok {

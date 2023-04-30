@@ -1,8 +1,6 @@
 package request
 
-import (
-	"github.com/monaco-io/request/context"
-)
+import "github.com/monaco-io/request/xcontext"
 
 // Header http header
 type Header struct {
@@ -10,7 +8,7 @@ type Header struct {
 }
 
 // Apply apply http headers
-func (h Header) Apply(ctx *context.Context) {
+func (h Header) Apply(ctx *xcontext.Context) {
 	for k, v := range h.Data {
 		ctx.Request.Header.Set(k, v)
 	}
@@ -30,7 +28,7 @@ type SortedHeader struct {
 }
 
 // Apply apply http headers
-func (h SortedHeader) Apply(ctx *context.Context) {
+func (h SortedHeader) Apply(ctx *xcontext.Context) {
 	for i := range h.Data {
 		ctx.Request.Header.Set(h.Data[i][0], h.Data[i][1])
 	}
@@ -50,7 +48,7 @@ type UserAgent struct {
 }
 
 // Apply user agent in header
-func (ua UserAgent) Apply(ctx *context.Context) {
+func (ua UserAgent) Apply(ctx *xcontext.Context) {
 	ctx.Request.Header.Set("User-Agent", "github.com/monaco-io/request/"+ua.Version)
 }
 

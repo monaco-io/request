@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 )
 
 var (
@@ -46,7 +46,7 @@ type Timeouts struct {
 }
 
 // Apply http timeouts of tls, dial, keepalive or all
-func (to Timeouts) Apply(ctx *context.Context) {
+func (to Timeouts) Apply(ctx *xcontext.Context) {
 	if to.Request == 0 {
 		to.Request = RequestTimeout
 	}

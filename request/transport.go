@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"reflect"
 
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 )
 
 // Transport http Transport
@@ -13,7 +13,7 @@ type Transport struct {
 }
 
 // Apply http Transport
-func (t Transport) Apply(ctx *context.Context) {
+func (t Transport) Apply(ctx *xcontext.Context) {
 
 	// Override the http.Client transport
 	ctx.Client.Transport = t.RoundTripper

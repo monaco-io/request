@@ -11,7 +11,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 	"gopkg.in/yaml.v2"
 )
 
@@ -21,7 +21,7 @@ type BodyString struct {
 }
 
 // Apply string body
-func (b BodyString) Apply(ctx *context.Context) {
+func (b BodyString) Apply(ctx *xcontext.Context) {
 	bBytes := bytes.NewReader([]byte(b.Data))
 	rc, ok := io.Reader(bBytes).(io.ReadCloser)
 	if !ok && bBytes != nil {
@@ -46,7 +46,7 @@ type BodyJSON struct {
 }
 
 // Apply json body
-func (b BodyJSON) Apply(ctx *context.Context) {
+func (b BodyJSON) Apply(ctx *xcontext.Context) {
 	buf := &bytes.Buffer{}
 
 	switch b.Data.(type) {
@@ -63,7 +63,7 @@ func (b BodyJSON) Apply(ctx *context.Context) {
 
 	ctx.Request.Body = io.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	ctx.SetContentType(context.JSON)
+	ctx.SetContentType(xcontext.JSON)
 }
 
 // Valid json body valid?
@@ -80,7 +80,7 @@ type BodyXML struct {
 }
 
 // Apply xml body
-func (b BodyXML) Apply(ctx *context.Context) {
+func (b BodyXML) Apply(ctx *xcontext.Context) {
 	buf := &bytes.Buffer{}
 
 	switch b.Data.(type) {
@@ -97,7 +97,7 @@ func (b BodyXML) Apply(ctx *context.Context) {
 
 	ctx.Request.Body = io.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	ctx.SetContentType(context.XML)
+	ctx.SetContentType(xcontext.XML)
 }
 
 // Valid xml body valid?
@@ -114,7 +114,7 @@ type BodyYAML struct {
 }
 
 // Apply yaml body
-func (b BodyYAML) Apply(ctx *context.Context) {
+func (b BodyYAML) Apply(ctx *xcontext.Context) {
 	buf := &bytes.Buffer{}
 
 	switch b.Data.(type) {
@@ -147,7 +147,7 @@ type BodyURLEncodedForm struct {
 }
 
 // Apply application/x-www-form-urlencoded
-func (b BodyURLEncodedForm) Apply(ctx *context.Context) {
+func (b BodyURLEncodedForm) Apply(ctx *xcontext.Context) {
 	buf := &bytes.Buffer{}
 
 	switch b.Data.(type) {
@@ -172,7 +172,7 @@ func (b BodyURLEncodedForm) Apply(ctx *context.Context) {
 
 	ctx.Request.Body = io.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	ctx.SetContentType(context.URLEncodedForm)
+	ctx.SetContentType(xcontext.URLEncodedForm)
 }
 
 // Valid application/x-www-form-urlencoded valid?
@@ -196,7 +196,7 @@ type BodyForm struct {
 }
 
 // Apply Form Data
-func (fd BodyForm) Apply(ctx *context.Context) {
+func (fd BodyForm) Apply(ctx *xcontext.Context) {
 	var (
 		err error
 		buf bytes.Buffer

@@ -1,7 +1,7 @@
 package request
 
 import (
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 )
 
 // BasicAuth http basic auth with username and password
@@ -11,7 +11,7 @@ type BasicAuth struct {
 }
 
 // Apply http basic auth with username and password
-func (b BasicAuth) Apply(ctx *context.Context) {
+func (b BasicAuth) Apply(ctx *xcontext.Context) {
 	ctx.Request.SetBasicAuth(b.Username, b.Password)
 }
 
@@ -29,7 +29,7 @@ type BearerAuth struct {
 }
 
 // Apply bearer token
-func (b BearerAuth) Apply(ctx *context.Context) {
+func (b BearerAuth) Apply(ctx *xcontext.Context) {
 	ctx.Request.Header.Set("Authorization", "Bearer "+b.Data)
 }
 
@@ -47,7 +47,7 @@ type CustomerAuth struct {
 }
 
 // Apply customer Authorization on header
-func (c CustomerAuth) Apply(ctx *context.Context) {
+func (c CustomerAuth) Apply(ctx *xcontext.Context) {
 	ctx.Request.Header.Set("Authorization", c.Data)
 }
 

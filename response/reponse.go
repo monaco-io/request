@@ -9,13 +9,13 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 	"gopkg.in/yaml.v2"
 )
 
 // Sugar response with status code and body data
 type Sugar struct {
-	ctx *context.Context
+	ctx *xcontext.Context
 
 	// Internal buffer store
 	buffer *bytes.Buffer
@@ -24,7 +24,7 @@ type Sugar struct {
 }
 
 // New new sugared response
-func New(ctx *context.Context) *Sugar {
+func New(ctx *xcontext.Context) *Sugar {
 	return &Sugar{ctx: ctx, buffer: bytes.NewBuffer([]byte{})}
 }
 
@@ -123,9 +123,9 @@ func (s *Sugar) Scan(data interface{}) *Sugar {
 		return s
 	}
 	switch ct := s.ContentType(); {
-	case context.ContentTypeValid(ct, context.JSON):
+	case xcontext.ContentTypeValid(ct, xcontext.JSON):
 		s.ScanJSON(data)
-	case context.ContentTypeValid(ct, context.XML):
+	case xcontext.ContentTypeValid(ct, xcontext.XML):
 		s.ScanXML(data)
 	default:
 		s.ctx.SetError(fmt.Errorf("content type unsupported: %s", ct))
@@ -214,6 +214,6 @@ func (s *Sugar) ScanYAML(userStruct interface{}) *Sugar {
 }
 
 // TimeTrace ...
-func (s *Sugar) TimeTrace() context.Time {
+func (s *Sugar) TimeTrace() xcontext.Time {
 	return s.ctx.TimeTrace
 }

@@ -3,9 +3,9 @@ package request
 import (
 	originContext "context"
 
-	"github.com/monaco-io/request/context"
 	"github.com/monaco-io/request/request"
 	"github.com/monaco-io/request/response"
+	"github.com/monaco-io/request/xcontext"
 )
 
 // Send http request
@@ -17,13 +17,13 @@ func (c *Client) Send() *response.Sugar {
 	return resp.Do()
 }
 
-func (c *Client) initContext() *context.Context {
-	var ctx *context.Context
+func (c *Client) initContext() *xcontext.Context {
+	var ctx *xcontext.Context
 
 	if c.Context != nil {
-		ctx = context.NewWithContext(c.Context)
+		ctx = xcontext.NewWithContext(c.Context)
 	} else {
-		ctx = context.New()
+		ctx = xcontext.New()
 	}
 
 	plugins := []request.Plugin{

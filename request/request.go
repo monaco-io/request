@@ -5,13 +5,13 @@ import (
 	"crypto/tls"
 	"net/http"
 
-	"github.com/monaco-io/request/context"
 	"github.com/monaco-io/request/response"
+	xcontext "github.com/monaco-io/request/xcontext"
 )
 
 // Request an alias of context
 type Request struct {
-	ctx *context.Context
+	ctx *xcontext.Context
 }
 
 func (r *Request) use(p Plugin) *Request {
@@ -21,12 +21,12 @@ func (r *Request) use(p Plugin) *Request {
 
 // New request struct
 func New() *Request {
-	return &Request{ctx: context.New()}
+	return &Request{ctx: xcontext.New()}
 }
 
 // NewWithContext request struct
 func NewWithContext(ctx originContext.Context) *Request {
-	return &Request{ctx: context.NewWithContext(ctx)}
+	return &Request{ctx: xcontext.NewWithContext(ctx)}
 }
 
 // Error get request error
@@ -35,7 +35,7 @@ func (r *Request) Error() error {
 }
 
 // Ctx get request ctx
-func (r *Request) Ctx() *context.Context {
+func (r *Request) Ctx() *xcontext.Context {
 	return r.ctx
 }
 

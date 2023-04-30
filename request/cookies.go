@@ -3,7 +3,7 @@ package request
 import (
 	"net/http"
 
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 )
 
 // Cookies http cookies
@@ -13,7 +13,7 @@ type Cookies struct {
 }
 
 // Apply http cookies
-func (c Cookies) Apply(ctx *context.Context) {
+func (c Cookies) Apply(ctx *xcontext.Context) {
 	for _, cookie := range c.Data {
 		ctx.Request.AddCookie(cookie)
 	}
