@@ -14,8 +14,5 @@ func (m Method) Apply(ctx *xcontext.Context) {
 
 // Valid  http method: GET, POST, DELETE ... valid?
 func (m Method) Valid() bool {
-	if m.Data == "" {
-		return false
-	}
-	return true
+	return m.Data != ""
 }

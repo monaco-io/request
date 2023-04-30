@@ -34,10 +34,7 @@ func (b BodyString) Apply(ctx *xcontext.Context) {
 
 // Valid string body valid?
 func (b BodyString) Valid() bool {
-	if b.Data == "" {
-		return false
-	}
-	return true
+	return b.Data != ""
 }
 
 // BodyJSON body of type json
@@ -68,10 +65,7 @@ func (b BodyJSON) Apply(ctx *xcontext.Context) {
 
 // Valid json body valid?
 func (b BodyJSON) Valid() bool {
-	if b.Data == nil {
-		return false
-	}
-	return true
+	return b.Data != nil
 }
 
 // BodyXML body of type xml
@@ -102,10 +96,7 @@ func (b BodyXML) Apply(ctx *xcontext.Context) {
 
 // Valid xml body valid?
 func (b BodyXML) Valid() bool {
-	if b.Data == nil {
-		return false
-	}
-	return true
+	return b.Data != nil
 }
 
 // BodyYAML body of type yaml
@@ -135,10 +126,7 @@ func (b BodyYAML) Apply(ctx *xcontext.Context) {
 
 // Valid json body valid?
 func (b BodyYAML) Valid() bool {
-	if b.Data == nil {
-		return false
-	}
-	return true
+	return b.Data != nil
 }
 
 // BodyURLEncodedForm application/x-www-form-urlencoded
@@ -177,10 +165,7 @@ func (b BodyURLEncodedForm) Apply(ctx *xcontext.Context) {
 
 // Valid application/x-www-form-urlencoded valid?
 func (b BodyURLEncodedForm) Valid() bool {
-	if b.Data == nil {
-		return false
-	}
-	return true
+	return b.Data != nil
 }
 
 // FormFile represents the file form field data.

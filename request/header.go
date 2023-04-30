@@ -16,10 +16,7 @@ func (h Header) Apply(ctx *xcontext.Context) {
 
 // Valid user agent in header valid?
 func (h Header) Valid() bool {
-	if h.Data == nil {
-		return false
-	}
-	return true
+	return h.Data != nil
 }
 
 // SortedHeader header slice, example [][2]string{{k1,v1},{k2,v2}}
@@ -36,10 +33,7 @@ func (h SortedHeader) Apply(ctx *xcontext.Context) {
 
 // Valid user agent in header valid?
 func (h SortedHeader) Valid() bool {
-	if h.Data == nil {
-		return false
-	}
-	return true
+	return h.Data != nil
 }
 
 // UserAgent user agent in header
@@ -54,8 +48,5 @@ func (ua UserAgent) Apply(ctx *xcontext.Context) {
 
 // Valid user agent in header valid?
 func (ua UserAgent) Valid() bool {
-	if ua.Version == "" {
-		return false
-	}
-	return true
+	return ua.Version != ""
 }
