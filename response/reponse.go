@@ -212,8 +212,3 @@ func (s *Sugar) ScanYAML(userStruct interface{}) *Sugar {
 
 	return s
 }
-
-// TimeTrace ...
-func (s *Sugar) TimeTrace() xcontext.Time {
-	return s.ctx.TimeTrace
-}

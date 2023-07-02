@@ -257,10 +257,6 @@ func TestContext_TraceDo(t *testing.T) {
 	if !resp.OK() {
 		t.Error(resp.Error())
 	}
-
-	if resp.TimeTrace().Duration == 0 {
-		t.Fail()
-	}
 }
 
 func TestJSONBody(t *testing.T) {

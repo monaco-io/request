@@ -10,9 +10,7 @@ type Context struct {
 	Client   *http.Client   `json:"client,omitempty"`
 	Request  *http.Request  `json:"request,omitempty"`
 	Response *http.Response `json:"response,omitempty"`
-
-	TimeTrace Time
-	err       error
+	err      error
 }
 
 // New creates an empty Context
@@ -29,11 +27,6 @@ func NewWithContext(ctx originContext.Context) *Context {
 		Request: newRequestWithContext(ctx),
 		Client:  &http.Client{Transport: http.DefaultTransport},
 	}
-}
-
-// GetTimeTrace set http debug mode
-func (c *Context) GetTimeTrace() Time {
-	return c.TimeTrace
 }
 
 // GetClient get original http client
