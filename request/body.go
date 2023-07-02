@@ -11,7 +11,7 @@ import (
 	"os"
 	"path"
 
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 	"gopkg.in/yaml.v2"
 )
 
@@ -21,7 +21,7 @@ type BodyString struct {
 }
 
 // Apply string body
-func (b BodyString) Apply(ctx *context.Context) {
+func (b BodyString) Apply(ctx *xcontext.Context) {
 	bBytes := bytes.NewReader([]byte(b.Data))
 	rc, ok := io.Reader(bBytes).(io.ReadCloser)
 	if !ok && bBytes != nil {
@@ -34,10 +34,7 @@ func (b BodyString) Apply(ctx *context.Context) {
 
 // Valid string body valid?
 func (b BodyString) Valid() bool {
-	if b.Data == "" {
-		return false
-	}
-	return true
+	return b.Data != ""
 }
 
 // BodyJSON body of type json
@@ -46,7 +43,7 @@ type BodyJSON struct {
 }
 
 // Apply json body
-func (b BodyJSON) Apply(ctx *context.Context) {
+func (b BodyJSON) Apply(ctx *xcontext.Context) {
 	buf := &bytes.Buffer{}
 
 	switch b.Data.(type) {
@@ -63,15 +60,12 @@ func (b BodyJSON) Apply(ctx *context.Context) {
 
 	ctx.Request.Body = io.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	ctx.SetContentType(context.JSON)
+	ctx.SetContentType(xcontext.JSON)
 }
 
 // Valid json body valid?
 func (b BodyJSON) Valid() bool {
-	if b.Data == nil {
-		return false
-	}
-	return true
+	return b.Data != nil
 }
 
 // BodyXML body of type xml
@@ -80,7 +74,7 @@ type BodyXML struct {
 }
 
 // Apply xml body
-func (b BodyXML) Apply(ctx *context.Context) {
+func (b BodyXML) Apply(ctx *xcontext.Context) {
 	buf := &bytes.Buffer{}
 
 	switch b.Data.(type) {
@@ -97,15 +91,12 @@ func (b BodyXML) Apply(ctx *context.Context) {
 
 	ctx.Request.Body = io.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	ctx.SetContentType(context.XML)
+	ctx.SetContentType(xcontext.XML)
 }
 
 // Valid xml body valid?
 func (b BodyXML) Valid() bool {
-	if b.Data == nil {
-		return false
-	}
-	return true
+	return b.Data != nil
 }
 
 // BodyYAML body of type yaml
@@ -114,7 +105,7 @@ type BodyYAML struct {
 }
 
 // Apply yaml body
-func (b BodyYAML) Apply(ctx *context.Context) {
+func (b BodyYAML) Apply(ctx *xcontext.Context) {
 	buf := &bytes.Buffer{}
 
 	switch b.Data.(type) {
@@ -135,10 +126,7 @@ func (b BodyYAML) Apply(ctx *context.Context) {
 
 // Valid json body valid?
 func (b BodyYAML) Valid() bool {
-	if b.Data == nil {
-		return false
-	}
-	return true
+	return b.Data != nil
 }
 
 // BodyURLEncodedForm application/x-www-form-urlencoded
@@ -147,7 +135,7 @@ type BodyURLEncodedForm struct {
 }
 
 // Apply application/x-www-form-urlencoded
-func (b BodyURLEncodedForm) Apply(ctx *context.Context) {
+func (b BodyURLEncodedForm) Apply(ctx *xcontext.Context) {
 	buf := &bytes.Buffer{}
 
 	switch b.Data.(type) {
@@ -172,15 +160,12 @@ func (b BodyURLEncodedForm) Apply(ctx *context.Context) {
 
 	ctx.Request.Body = io.NopCloser(buf)
 	ctx.Request.ContentLength = int64(buf.Len())
-	ctx.SetContentType(context.URLEncodedForm)
+	ctx.SetContentType(xcontext.URLEncodedForm)
 }
 
 // Valid application/x-www-form-urlencoded valid?
 func (b BodyURLEncodedForm) Valid() bool {
-	if b.Data == nil {
-		return false
-	}
-	return true
+	return b.Data != nil
 }
 
 // FormFile represents the file form field data.
@@ -196,7 +181,7 @@ type BodyForm struct {
 }
 
 // Apply Form Data
-func (fd BodyForm) Apply(ctx *context.Context) {
+func (fd BodyForm) Apply(ctx *xcontext.Context) {
 	var (
 		err error
 		buf bytes.Buffer

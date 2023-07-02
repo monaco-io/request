@@ -1,7 +1,7 @@
 package request
 
 import (
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 )
 
 // BasicAuth http basic auth with username and password
@@ -11,16 +11,13 @@ type BasicAuth struct {
 }
 
 // Apply http basic auth with username and password
-func (b BasicAuth) Apply(ctx *context.Context) {
+func (b BasicAuth) Apply(ctx *xcontext.Context) {
 	ctx.Request.SetBasicAuth(b.Username, b.Password)
 }
 
 // Valid http basic auth with username and password valid?
 func (b BasicAuth) Valid() bool {
-	if b.Username == "" {
-		return false
-	}
-	return true
+	return b.Username != ""
 }
 
 // BearerAuth token
@@ -29,16 +26,13 @@ type BearerAuth struct {
 }
 
 // Apply bearer token
-func (b BearerAuth) Apply(ctx *context.Context) {
+func (b BearerAuth) Apply(ctx *xcontext.Context) {
 	ctx.Request.Header.Set("Authorization", "Bearer "+b.Data)
 }
 
 // Valid bearer token valid?
 func (b BearerAuth) Valid() bool {
-	if b.Data == "" {
-		return false
-	}
-	return true
+	return b.Data != ""
 }
 
 // CustomerAuth customer Authorization on header
@@ -47,14 +41,11 @@ type CustomerAuth struct {
 }
 
 // Apply customer Authorization on header
-func (c CustomerAuth) Apply(ctx *context.Context) {
+func (c CustomerAuth) Apply(ctx *xcontext.Context) {
 	ctx.Request.Header.Set("Authorization", c.Data)
 }
 
 // Valid customer Authorization on header valid?
 func (c CustomerAuth) Valid() bool {
-	if c.Data == "" {
-		return false
-	}
-	return true
+	return c.Data != ""
 }

@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"net/http"
 
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 )
 
 // TLSConfig http tls config of transport
@@ -13,7 +13,7 @@ type TLSConfig struct {
 }
 
 // Apply http tls config of transport
-func (tc TLSConfig) Apply(ctx *context.Context) {
+func (tc TLSConfig) Apply(ctx *xcontext.Context) {
 
 	// Assert http.Transport to work with the instance
 	transport, ok := ctx.Client.Transport.(*http.Transport)
@@ -22,7 +22,6 @@ func (tc TLSConfig) Apply(ctx *context.Context) {
 		// TODO:
 		return
 	}
-
 	// Override the http.Client transport
 	transport.TLSClientConfig = tc.Config
 	ctx.Client.Transport = transport
@@ -30,5 +29,5 @@ func (tc TLSConfig) Apply(ctx *context.Context) {
 
 // Valid http timeouts of tls, dial, keepalive or all valid?
 func (tc TLSConfig) Valid() bool {
-	return true
+	return tc.Config != nil
 }

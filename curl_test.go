@@ -80,8 +80,6 @@ func TestClient_PrintCURL(t *testing.T) {
 				CustomerAuth:   tt.fields.CustomerAuth,
 				Bearer:         tt.fields.Bearer,
 				Timeout:        tt.fields.Timeout,
-				TLSTimeout:     tt.fields.TLSTimeout,
-				DialTimeout:    tt.fields.DialTimeout,
 				ProxyURL:       tt.fields.ProxyURL,
 				ProxyServers:   tt.fields.ProxyServers,
 				Cookies:        tt.fields.Cookies,

@@ -3,9 +3,9 @@ package request
 import (
 	originContext "context"
 
-	"github.com/monaco-io/request/context"
 	"github.com/monaco-io/request/request"
 	"github.com/monaco-io/request/response"
+	"github.com/monaco-io/request/xcontext"
 )
 
 // Send http request
@@ -17,13 +17,13 @@ func (c *Client) Send() *response.Sugar {
 	return resp.Do()
 }
 
-func (c *Client) initContext() *context.Context {
-	var ctx *context.Context
+func (c *Client) initContext() *xcontext.Context {
+	var ctx *xcontext.Context
 
 	if c.Context != nil {
-		ctx = context.NewWithContext(c.Context)
+		ctx = xcontext.NewWithContext(c.Context)
 	} else {
-		ctx = context.New()
+		ctx = xcontext.New()
 	}
 
 	plugins := []request.Plugin{
@@ -34,10 +34,10 @@ func (c *Client) initContext() *context.Context {
 		request.Header{Data: c.Header},
 		request.SortedHeader{Data: c.SortedHeader},
 		request.Cookies{Data: c.Cookies, Map: c.CookiesMap},
-		request.BearerAuth{Data: c.Bearer},
-		request.CustomerAuth{},
 		request.BasicAuth{Username: c.BasicAuth.Username, Password: c.BasicAuth.Password},
-		request.Timeouts{Request: c.Timeout, TLS: c.TLSTimeout, Dial: c.DialTimeout},
+		request.BearerAuth{Data: c.Bearer},
+		request.CustomerAuth{Data: c.CustomerAuth},
+		request.Timeout{Data: c.Timeout},
 		request.Proxy{Servers: c.ProxyServers, URL: c.ProxyURL},
 		request.BodyJSON{Data: c.JSON},
 		request.BodyString{Data: c.String},
@@ -45,8 +45,8 @@ func (c *Client) initContext() *context.Context {
 		request.BodyYAML{Data: c.YAML},
 		request.BodyForm{Fields: c.MultipartForm.Fields, Files: c.MultipartForm.Files},
 		request.BodyURLEncodedForm{Data: c.URLEncodedForm},
+		request.Transport{Transport: c.Transport},
 		request.TLSConfig{Config: c.TLSConfig},
-		request.Transport{RoundTripper: c.Transport},
 	}
 
 	for _, plugin := range plugins {

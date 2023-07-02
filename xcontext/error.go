@@ -1,4 +1,4 @@
-package context
+package xcontext
 
 // Error get context error
 func (c *Context) Error() error {

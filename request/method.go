@@ -1,6 +1,6 @@
 package request
 
-import "github.com/monaco-io/request/context"
+import "github.com/monaco-io/request/xcontext"
 
 // Method http method: GET, POST, DELETE ...
 type Method struct {
@@ -8,14 +8,11 @@ type Method struct {
 }
 
 // Apply http method: GET, POST, DELETE ...
-func (m Method) Apply(ctx *context.Context) {
+func (m Method) Apply(ctx *xcontext.Context) {
 	ctx.Request.Method = m.Data
 }
 
 // Valid  http method: GET, POST, DELETE ... valid?
 func (m Method) Valid() bool {
-	if m.Data == "" {
-		return false
-	}
-	return true
+	return m.Data != ""
 }

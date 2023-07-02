@@ -3,7 +3,7 @@ package request
 import (
 	"net/url"
 
-	"github.com/monaco-io/request/context"
+	"github.com/monaco-io/request/xcontext"
 )
 
 // Host http host name like: https://www.google.com
@@ -12,16 +12,13 @@ type Host struct {
 }
 
 // Apply http host name like: https://www.google.com
-func (h Host) Apply(ctx *context.Context) {
+func (h Host) Apply(ctx *xcontext.Context) {
 	ctx.Request.URL.Host = h.Data
 }
 
 // Valid http host name like: https://www.google.com valid?
 func (h Host) Valid() bool {
-	if h.Data == "" {
-		return false
-	}
-	return true
+	return h.Data != ""
 }
 
 // Path http url path like: /api/v1/xx
@@ -30,7 +27,7 @@ type Path struct {
 }
 
 // Apply http url path like: /api/v1/xx
-func (p Path) Apply(ctx *context.Context) {
+func (p Path) Apply(ctx *xcontext.Context) {
 	if p.Data == "" {
 		return
 	}
@@ -39,10 +36,7 @@ func (p Path) Apply(ctx *context.Context) {
 
 // Valid http url path like: /api/v1/xx valid?
 func (p Path) Valid() bool {
-	if p.Data == "" {
-		return false
-	}
-	return true
+	return p.Data != ""
 }
 
 // Query http query params like: ?a=1&b=2
@@ -51,7 +45,7 @@ type Query struct {
 }
 
 // Apply http query params like: ?a=1&b=2
-func (q Query) Apply(ctx *context.Context) {
+func (q Query) Apply(ctx *xcontext.Context) {
 	if q.Data == nil {
 		return
 	}
@@ -64,10 +58,7 @@ func (q Query) Apply(ctx *context.Context) {
 
 // Valid http url path like: /api/v1/xx valid?
 func (q Query) Valid() bool {
-	if q.Data == nil {
-		return false
-	}
-	return true
+	return q.Data != nil
 }
 
 // URL http url (host+path+params)
@@ -76,7 +67,7 @@ type URL struct {
 }
 
 // Apply http url (host+path+params)
-func (_u URL) Apply(ctx *context.Context) {
+func (_u URL) Apply(ctx *xcontext.Context) {
 	if _u.Data == "" {
 		return
 	}
@@ -89,8 +80,5 @@ func (_u URL) Apply(ctx *context.Context) {
 
 // Valid http url path like: /api/v1/xx valid?
 func (_u URL) Valid() bool {
-	if _u.Data == "" {
-		return false
-	}
-	return true
+	return _u.Data != ""
 }
