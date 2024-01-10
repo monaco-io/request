@@ -2,6 +2,7 @@ package request
 
 import (
 	"github.com/monaco-io/request/xcontext"
+	"strings"
 )
 
 // BasicAuth http basic auth with username and password
@@ -16,8 +17,19 @@ func (b BasicAuth) Apply(ctx *xcontext.Context) {
 }
 
 // Valid http basic auth with username and password valid?
+// https://www.ietf.org/rfc/rfc2617.txt (page 5)
+//
+//	user-pass   = userid ":" password
+//	userid      = *<TEXT excluding ":">
+//	password    = *TEXT
+//
+//	The `*TEXT` rule allows an empty string as a value.
+//	See https://datatracker.ietf.org/doc/html/rfc5234#section-3.6
 func (b BasicAuth) Valid() bool {
-	return b.Username != ""
+	if b.Username != "" {
+		return !strings.Contains(b.Username, ":")
+	}
+	return true
 }
 
 // BearerAuth token
